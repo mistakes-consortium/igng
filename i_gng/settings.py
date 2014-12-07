@@ -122,3 +122,10 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SITE_ID = 1
+
+try:
+    path = os.path.join(BASE_DIR, "i_gng", "local_settings.py")
+    f = open(path)
+    exec f.read()
+except IOError:
+    print "No local settings found!"

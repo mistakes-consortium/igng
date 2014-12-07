@@ -56,6 +56,7 @@ target/
 # more django
 local_settings.py
 db.sqlite3
+uploads/
 
 #PyCharm
 .idea/
