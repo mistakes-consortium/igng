@@ -12,6 +12,7 @@ class ImageSerializer(serializers.ModelSerializer):
     full_url = serializers.SerializerMethodField()
     thumb_url = serializers.SerializerMethodField()
     tiny_thumb_url = serializers.SerializerMethodField()
+    gallery = serializers.CharField(source="gallery.uuid")
 
     class Meta:
         model = Image
