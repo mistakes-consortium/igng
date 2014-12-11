@@ -55,3 +55,11 @@ class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
     lookup_field = "uuid"
+
+    # def filter_queryset(self, queryset):
+    #     qs = super(ImageViewSet, self).filter_queryset(queryset)
+    #     if self.request.user.is_authenticated():
+    #         qs = qs.filter(Q(private=False) | Q(user=self.request.user))
+    #     else:
+    #         qs = qs.filter(Q(private=False))
+    #     return qs
