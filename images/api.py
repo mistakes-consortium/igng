@@ -1,11 +1,14 @@
 from django.db.models import Q
 from rest_framework import permissions
+from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
 from images.models import Gallery, Image
-from images.serializers import GallerySerializer, ImageSerializer
+from images.serializers import GallerySerializer, ImageSerializer, ImageUploadSerializer
 
 
 class PublicGalleryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -55,6 +58,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
     lookup_field = "uuid"
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
 
     # def filter_queryset(self, queryset):
     #     qs = super(ImageViewSet, self).filter_queryset(queryset)
@@ -63,3 +67,15 @@ class ImageViewSet(viewsets.ModelViewSet):
     #     else:
     #         qs = qs.filter(Q(private=False))
     #     return qs
+
+    def create(self, request, *args, **kwargs):
+        self.serializer_class = ImageUploadSerializer
+        super(ImageViewSet, self).create(request, *args, **kwargs)
+
+    @detail_route(methods=['GET'])
+    def exif_check(self, request, uuid=None):
+        obj = self.get_object()
+        obj.query_exif()
+
+        ret = {"status":"EXIF_QUERIED"}
+        return Response(ret, status=status.HTTP_201_CREATED)

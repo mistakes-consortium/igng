@@ -1,5 +1,5 @@
 import datetime
-from images.models import Gallery, Image
+from images.models import Gallery, Image, EXIFEntry
 from rest_framework import serializers
 import pytz
 
@@ -15,6 +15,15 @@ class GallerySerializer(serializers.ModelSerializer):
         return (obj.updated - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()
 
 
+class EXIFSerializer(serializers.ModelSerializer):
+    key = serializers.CharField(source="key.key")
+    value = serializers.CharField(source="value.value")
+
+    class Meta:
+        model = EXIFEntry
+        fields = ('key', 'value')
+
+
 class ImageSerializer(serializers.ModelSerializer):
     full_url = serializers.SerializerMethodField()
     thumb_url = serializers.SerializerMethodField()
@@ -22,11 +31,12 @@ class ImageSerializer(serializers.ModelSerializer):
     gallery = serializers.CharField(source="gallery.uuid")
 
     uploaded_u = serializers.SerializerMethodField()
+    exif_data = EXIFSerializer(read_only=True, many=True)
 
     class Meta:
         model = Image
         fields = ('uuid', 'user', 'gallery', 'uploaded', 'uploaded_u', 'title', 'uuid',
-                  'full_url', 'thumb_url', 'tiny_thumb_url')
+                  'full_url', 'thumb_url', 'tiny_thumb_url', 'exif_data')
 
     def get_full_url(self, obj):
         return obj.full_fixed.url
@@ -39,3 +49,11 @@ class ImageSerializer(serializers.ModelSerializer):
 
     def get_uploaded_u(self, obj):
         return (obj.uploaded - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()
+
+
+class ImageUploadSerializer(serializers.ModelSerializer):
+    original = serializers.FileField()
+
+    class Meta:
+        model = Image
+        field = ('user', 'gallery', 'title', 'tags', 'original')
