@@ -33,12 +33,13 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     'django.contrib.admin',
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+
 
     # the most necessary tool of all
     'rest_framework',
@@ -106,8 +107,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR + "/media"
 
 
+TEMPLATE_DIRS = (
+    BASE_DIR + "/tmpl",
+)
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    # '/var/www/static/',
+)
 ## Template Tags for AllAUth
 
 TEMPLATE_CONTEXT_PROCESSORS = TCP + (

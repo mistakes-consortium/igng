@@ -2,6 +2,7 @@ from django.conf.urls import include, patterns, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic.base import RedirectView
 
 urlpatterns = patterns('',
     # Examples:
@@ -9,7 +10,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^images/', include("images.urls")),
+    url(r'^i/', include("images.urls")),
+    # url(r'$', RedirectView.as_view(url='i/'))
 )
 
 if settings.DEBUG:

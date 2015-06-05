@@ -1,3 +1,4 @@
+import base64
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -14,12 +15,13 @@ from taggit.managers import TaggableManager
 
 # User = get_user_model()
 from django.conf import settings
+from images.managers import GalleryManager
 
 User = settings.AUTH_USER_MODEL
 
 
 class Gallery(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name="galleries")
     updated = models.DateTimeField(auto_now=True)
 
     # other fields
@@ -31,16 +33,32 @@ class Gallery(models.Model):
     title = models.CharField(max_length=256, null=True, blank=True)
 
     # status fields
-    private = models.BooleanField(default=False)
+    private = models.BooleanField(default=True)
+
+    # deletable
+    deletable = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.title
+
+    objects = GalleryManager()
+
+    class Meta:
+        unique_together = ('user', 'title')
+
+    @property
+    def has_images(self):
+        return self.images.exists()
+
+    @property
+    def rand_img(self):
+        return self.images.order_by("?")[0]
 
 
 def set_image_name_on_upload(instance, filename):
     file_ext = filename.rsplit('.', 1)[1]
     file_name = shortuuid.uuid()
-    return "uploads/" + ".".join([file_name, file_ext])
+    return settings.MEDIA_ROOT + "/uploads/" + ".".join([file_name, file_ext])
 
 
 class Image(models.Model):
@@ -63,13 +81,13 @@ class Image(models.Model):
     )
     bigger = ImageSpecField(
         source="full_fixed",
-        processors=[Resize(1440, 1080)],
+        processors=[SmartResize(1440, 1080)],
         format="JPEG",
         options={'quality': 80}
     )
     default = ImageSpecField(
         source="full_fixed",
-        processors=[Resize(720, 540)],
+        processors=[SmartResize(720, 540)],
         format="JPEG",
         options={'quality': 80}
     )
@@ -93,6 +111,10 @@ class Image(models.Model):
     )
 
     exif_data = models.ManyToManyField("EXIFEntry", null=True, blank=True)
+
+    @property
+    def uuid_as_b64(self):
+        return base64.b64encode(self.uuid)
 
     def query_exif(self, only_when_empty=True, do_empty=False):
         image = IMG.open(self.original)

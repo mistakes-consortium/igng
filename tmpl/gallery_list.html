@@ -1,0 +1,64 @@
+{% extends "igng_base.html" %}
+{% load staticfiles %}
+
+  {% block hero %}
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center purple-text">iGNG</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Your Galleries</h5>
+      </div>
+
+    </div>
+  </div>
+  {% endblock %}
+  {% block contentarea %}
+
+  <div class="container">
+    <div class="section">
+        <div class="row">
+        {% for object in galleries %}
+
+        <div class="col s4 m4">
+          <div class="card small">
+            <div class="card-image">
+            <a href="{% url "user_gallery_images" object.uuid %}">
+            {% if object.has_images %}
+              <img src="{{ object.rand_img.preview.url }}">
+            {% else %}
+              <img src="#">
+            {% endif %}
+              <span class="card-title">{{ object.title }}</span>
+            </a>
+            </div>
+            <div class="card-content">
+              {% if object.rel_start %}
+                <p>Start: {{ object.rel_start}}</p>
+              {% endif %}
+              {% if object.rel_end %}
+                <p>Start: {{ object.rel_end }}</p>
+              {% endif %}
+              {% if not object.rel_start and not object.rel_end %}
+                  Last Updated: {{ object.updated }}
+              {% endif %}
+            </div>
+            <div class="card-action">
+              <a href="#">$Private_Toggle</a>
+              <a href="#">$PermaLink</a>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+        </div>
+    </div>
+  </div>
+  {% endblock %}
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{% static "js/materialize.js" %}"></script>
+  <script src="{% static "js/init.js" %}"></script>
+
+  </body>
+</html>
