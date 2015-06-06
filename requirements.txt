@@ -1,11 +1,11 @@
-Django==1.7.1
+Django==1.8.2
 Pillow==2.6.1
 django-allauth==0.18.0
 django-appconf==0.6
 django-extensions==1.4.6
 django-filter==0.8
 django-imagekit==3.2.4
-django-taggit==0.12.2
+django-taggit==0.14.0
 djangorestframework==3.0.0
 oauthlib==0.7.2
 pilkit==1.1.12

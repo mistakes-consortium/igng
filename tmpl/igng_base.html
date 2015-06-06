@@ -16,9 +16,15 @@
     <div class="nav-wrapper container"><a id="logo-container" href="/i/" class="brand-logo">iGNG</a>
       <ul class="right hide-on-med-and-down">
         {% if request.user.is_authenticated %}
-          <li><a href="{% url "user_images" %}" title="Your Images">I</a></li>
-          <li><a href="{% url "user_galleries" %}" title="Your Galleries">G</a></li>
-          <li><a href="#" title="Your Account">A</a></li>
+          <li><a href="{% url "user_images" %}" title="Your Images">
+              <i class="mdi-image-crop-original"></i>
+          </a></li>
+          <li><a href="{% url "user_galleries" %}" title="Your Galleries">
+              <i class="mdi-image-collections"></i>
+          </a></li>
+          <li><a href="#" title="Your Account">
+              <i class="mdi-action-settings-applications"></i>
+          </a></li>
         {% else %}
           <li><a href="#">Login Button</a></li>
         {% endif %}
@@ -125,7 +131,7 @@
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="purple-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      Made by <a class="purple-text text-lighten-3" href="https://github.com/mistakes-consortium">Mistakes Consortium</a>
       </div>
     </div>
   </footer>
