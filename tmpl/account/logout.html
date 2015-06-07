@@ -1,0 +1,35 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block hero %}
+
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5>{% trans "Sign Out" %}</h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block contentarea %}
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <p>{% trans 'Are you sure you want to sign out?' %}</p>
+
+                <form method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+                    <button type="submit">{% trans 'Sign Out' %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

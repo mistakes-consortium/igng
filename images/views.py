@@ -88,3 +88,8 @@ def user_galleries(request):
 
     context = RequestContext(request,{"galleries":galleries})
     return render_to_response("gallery_list.html", context)
+
+@login_required
+def user_settings(request):
+    context = RequestContext(request)
+    return render_to_response("settings.html", context)

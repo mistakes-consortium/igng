@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP #allauth
+# from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP #allauth < 1.8
+from django.core.urlresolvers import reverse_lazy
 
 
 # Quick-start development settings - unsuitable for production
@@ -57,8 +58,15 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.persona',
 
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.flickr',
+    # 'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.openid',
+    'allauth.socialaccount.providers.persona',
+    # 'allauth.socialaccount.providers.stackexchange',
+    # 'allauth.socialaccount.providers.twitter',
     # our app
     'images',
 )
@@ -120,16 +128,33 @@ STATICFILES_DIRS = (
 )
 ## Template Tags for AllAUth
 
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    "django.core.context_processors.request",
-    "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['tmpl'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Already defined Django-related contexts here
+
+                # `allauth` needs this from django
+                'django.core.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+
+                # `allauth` specific context processors
+                'allauth.account.context_processors.account',
+                'allauth.socialaccount.context_processors.socialaccount',
+            ],
+        },
+    },
+]
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
+
+LOGIN_URL = reverse_lazy('account_login')
 
 SITE_ID = 1
 
