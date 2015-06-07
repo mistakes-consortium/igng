@@ -86,7 +86,19 @@ def user_get_gallery_images(request, obj_uuid):
 def user_galleries(request):
     galleries = request.user.galleries.notdefault(request.user)
 
-    context = RequestContext(request,{"galleries":galleries})
+    paginator = Paginator(galleries, 12)
+    page = request.GET.get('page')
+    try:
+        gals = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        gals = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        gals = paginator.page(paginator.num_pages)
+
+
+    context = RequestContext(request,{"galleries":gals})
     return render_to_response("gallery_list.html", context)
 
 @login_required

@@ -1,72 +1,86 @@
 {% extends "igng_base.html" %}
 {% load staticfiles %}
 
-  {% block hero %}
-  <div class="section no-pad-bot" id="index-banner">
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">
+                    {% if gallery_name %}
+                        Images in {{ gallery_name }}
+                    {% else %}
+                        Your Images
+                    {% endif %}
+                </h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block contentarea %}
+
     <div class="container">
-      <h1 class="header center purple-text">iGNG</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">
-            {% if gallery_name %}
-                Images in {{ gallery_name }}
-            {% else %}
-                Your Images
-            {% endif %}
-        </h5>
-      </div>
-    </div>
-  </div>
-  {% endblock %}
-  {% block contentarea %}
-
-  <div class="container">
-    <div class="section">
-        <div class="row">
-        {% for object in images %}
-        {# Each "contact" is a Contact model object. #}
-
-        <div class="col s4 m4">
-          <div class="card">
-            <div class="card-image">
-              <img src="{{ object.default.url }}">
-              <span class="card-title">{{ object.title }}</span>
-            </div>
-            <div class="card-content">
-              {% if object.tags.exists %}
-{#                <p>Tags: {{ object.tags.all|join:" ," }}</p>#}
-                  <p>
-                    {% for t in object.tags.all %}
-                        <a class="waves-effect waves-light btn orange">{{ t }}</a>
-                    {% endfor %}
-                  </p>
-              {% else %}
-                <p class="grey-text lighten-1">No Tags</p>
-              {% endif %}
-            </div>
-            <div class="card-action">
-              <a href="{{ object.full_fixed.url }}">Full Size</a>
-              <a href='{{ object.bigger.url }}'>Bigger</a>
-              <a href='{{ object.default.url }}'>Default Size</a>
-              <a href='{{ object.preview.url }}'>Preview Size</a>
-              <a href='{{ object.thumb.url }}'>Thumbnail</a>
-              <a href='{{ object.tiny_thumb}}'>Tiny Thumbnail</a>
-            </div>
-          </div>
-        </div>
-        {% if forloop.counter|divisibleby:3 %}
+        <div class="section">
             <div class="row">
+                {% for object in images %}
+                    {# Each "contact" is a Contact model object. #}
+
+                    <div class="col s4 m4">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="{{ object.default.url }}">
+                                <span class="card-title">{{ object.title }}</span>
+                            </div>
+                            <div class="card-content">
+                                {% if object.tags.exists %}
+                                    {#                <p>Tags: {{ object.tags.all|join:" ," }}</p>#}
+                                    <p>
+                                        {% for t in object.tags.all %}
+                                            <a class="waves-effect waves-light btn orange">{{ t }}</a>
+                                        {% endfor %}
+                                    </p>
+                                {% else %}
+                                    <p class="grey-text lighten-1">No Tags</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-action">
+                                <a href="{{ object.full_fixed.url }}">Full Size</a>
+                                <a href='{{ object.bigger.url }}'>Bigger</a>
+                                <a href='{{ object.default.url }}'>Default Size</a>
+                                <a href='{{ object.preview.url }}'>Preview Size</a>
+                                <a href='{{ object.thumb.url }}'>Thumbnail</a>
+                                <a href='{{ object.tiny_thumb }}'>Tiny Thumbnail</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:3 %}
+                        <div class="row">
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-        {% endif %}
-    {% endfor %}
+            <div class="row">
+                <ul class="pagination">
+                    {% if images.has_previous %}
+                       <li><a href="?page={{ images.previous_page_number }}"><i class="mdi-navigation-chevron-left"></i></a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-left"></i></a></li>
+                    {% endif %}
+
+                    {% for p in images.paginator.page_range %}
+                        <li class="waves-effect{% if p == images.number %} active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
+                    {% endfor %}
+
+
+                    {% if images.has_next %}
+                       <li><a href="?page={{ images.next_page_number }}"><i class="mdi-navigation-chevron-ri"></i></a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-right"></i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
-  </div>
-  {% endblock %}
+{% endblock %}
 
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="{% static "js/materialize.js" %}"></script>
-  <script src="{% static "js/init.js" %}"></script>
-
-  </body>
-</html>

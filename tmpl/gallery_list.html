@@ -1,62 +1,76 @@
 {% extends "igng_base.html" %}
 {% load staticfiles %}
 
-  {% block hero %}
-  <div class="section no-pad-bot" id="index-banner">
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">Your Galleries</h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block contentarea %}
+
     <div class="container">
-      <h1 class="header center purple-text">iGNG</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">Your Galleries</h5>
-      </div>
-    </div>
-  </div>
-  {% endblock %}
-  {% block contentarea %}
+        <div class="section">
+            <div class="row">
+                {% for object in galleries %}
 
-  <div class="container">
-    <div class="section">
-        <div class="row">
-        {% for object in galleries %}
+                    <div class="col s4 m4">
+                        <div class="card small">
+                            <div class="card-image">
+                                <a href="{% url "user_gallery_images" object.uuid %}">
+                                    {% if object.has_images %}
+                                        <img src="{{ object.rand_img.preview.url }}">
+                                    {% else %}
+                                        <img src="#">
+                                    {% endif %}
+                                    <span class="card-title">{{ object.title }}</span>
+                                </a>
+                            </div>
+                            <div class="card-content">
+                                {% if object.rel_start %}
+                                    <p>Start: {{ object.rel_start }}</p>
+                                {% endif %}
+                                {% if object.rel_end %}
+                                    <p>Start: {{ object.rel_end }}</p>
+                                {% endif %}
+                                {% if not object.rel_start and not object.rel_end %}
+                                    Last Updated: {{ object.updated }}
+                                {% endif %}
+                            </div>
+                            <div class="card-action">
+                                <a href="#">$Private_Toggle</a>
+                                <a href="#">$PermaLink</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <ul class="pagination">
+                    {% if galleries.has_previous %}
+                       <li><a href="?page={{ galleries.previous_page_number }}"><i class="mdi-navigation-chevron-left"></i></a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-left"></i></a></li>
+                    {% endif %}
 
-        <div class="col s4 m4">
-          <div class="card small">
-            <div class="card-image">
-            <a href="{% url "user_gallery_images" object.uuid %}">
-            {% if object.has_images %}
-              <img src="{{ object.rand_img.preview.url }}">
-            {% else %}
-              <img src="#">
-            {% endif %}
-              <span class="card-title">{{ object.title }}</span>
-            </a>
+                    {% for p in galleries.paginator.page_range %}
+                        <li class="waves-effect{% if p == galleries.number %} active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
+                    {% endfor %}
+
+
+                    {% if galleries.has_next %}
+                       <li><a href="?page={{ galleries.next_page_number }}"><i class="mdi-navigation-chevron-ri"></i></a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-right"></i></a></li>
+                    {% endif %}
+                </ul>
             </div>
-            <div class="card-content">
-              {% if object.rel_start %}
-                <p>Start: {{ object.rel_start}}</p>
-              {% endif %}
-              {% if object.rel_end %}
-                <p>Start: {{ object.rel_end }}</p>
-              {% endif %}
-              {% if not object.rel_start and not object.rel_end %}
-                  Last Updated: {{ object.updated }}
-              {% endif %}
-            </div>
-            <div class="card-action">
-              <a href="#">$Private_Toggle</a>
-              <a href="#">$PermaLink</a>
-            </div>
-          </div>
         </div>
-    {% endfor %}
-        </div>
     </div>
-  </div>
-  {% endblock %}
+{% endblock %}
 
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="{% static "js/materialize.js" %}"></script>
-  <script src="{% static "js/init.js" %}"></script>
-
-  </body>
-</html>
