@@ -69,7 +69,7 @@
                     {% endif %}
 
                     {% for p in images.paginator.page_range %}
-                        <li class="waves-effect{% if p == images.number %} active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
+                        <li class="orange darken-3 waves-effect{% if p == images.number %} active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
                     {% endfor %}
 
 
