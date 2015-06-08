@@ -43,8 +43,16 @@
                                 {% endif %}
                             </div>
                             <div class="card-action">
-                                <a href="#">$Private_Toggle</a>
+                                <a class="right" href="{% url "user_gallery_settings" object.uuid %}"><i class="small mdi-action-settings"></i></a>
+                                <a href="{% url "user_gallery_privacy_toggle" object.uuid %}">
+                                    {% if object.private %}
+                                        Currently Private
+                                    {% else %}
+                                        Currently Public
+                                    {% endif %}
+                                </a>
                                 <a href="#">$PermaLink</a>
+
                             </div>
                         </div>
                     </div>

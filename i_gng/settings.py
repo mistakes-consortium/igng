@@ -45,6 +45,9 @@ INSTALLED_APPS = (
     # the most necessary tool of all
     'rest_framework',
 
+    # some niceties for forms
+    'materializecssform',
+
     # dat shell_plus && UUIDfield
     'django_extensions',
 

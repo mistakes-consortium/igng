@@ -28,8 +28,8 @@ class Gallery(models.Model):
     uuid = ShortUUIDField(db_index=True)
 
     # info fields
-    rel_start = models.DateField(null=True, blank=True)
-    rel_end = models.DateField(null=True, blank=True)
+    rel_start = models.DateField(null=True, blank=True, verbose_name="Time Period Start")
+    rel_end = models.DateField(null=True, blank=True, verbose_name="Time Period End")
     title = models.CharField(max_length=256, null=True, blank=True)
 
     # status fields

@@ -7,7 +7,7 @@
     <div class="container">
       <h1 class="header center purple-text">iGNG</h1>
       <div class="row center">
-        <h5 class="header col s12 light">Upload</h5>
+        <h5 class="header col s12 light">Gallery Settings For {{ gallery.title }}</h5>
       </div>
 
     </div>
@@ -20,6 +20,7 @@
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form|materializecss }}
+            <br />
             <input type="submit" value="Submit" />
         </form>
     </div>
