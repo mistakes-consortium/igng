@@ -4,6 +4,7 @@ from django.db import models
 
 # Create your models here.
 from django_extensions.db.fields import ShortUUIDField
+from enumfields import EnumIntegerField, Enum
 from imagekit.models.fields import ProcessedImageField
 from imagekit.models.fields import ImageSpecField
 from pilkit.processors.base import Transpose
@@ -38,6 +39,21 @@ class Gallery(models.Model):
     # deletable
     deletable = models.BooleanField(default=True)
 
+    # let the user pick how many cards to show in a gallery.
+    class DisplaySize(Enum):
+        TINY = 0
+        SMALL = 1
+        MEDIUM = 2
+        LARGE = 3
+
+        class Labels:
+            TINY = "Twelve Images Per Row"
+            SMALL = "Six Images Per Row"
+            MEDIUM = "Three Images Per Row"
+            LARGE = "Two Images Per Row"
+
+    display_density = EnumIntegerField(DisplaySize, max_length=1, default=2)
+
     def __unicode__(self):
         return self.title
 
@@ -54,6 +70,27 @@ class Gallery(models.Model):
     def rand_img(self):
         return self.images.order_by("?")[0]
 
+    @property
+    def template_display_class(self):
+        if self.display_density == Gallery.DisplaySize.TINY:
+            return "s1 m1"
+        elif self.display_density == Gallery.DisplaySize.SMALL:
+            return "s2 m2"
+        elif self.display_density == Gallery.DisplaySize.MEDIUM:
+            return "s4 m4"
+        elif self.display_density == Gallery.DisplaySize.LARGE:
+            return "s6 m6"
+
+    @property
+    def template_divisibility(self):
+        if self.display_density == Gallery.DisplaySize.TINY:
+            return 12
+        elif self.display_density == Gallery.DisplaySize.SMALL:
+            return 6
+        elif self.display_density == Gallery.DisplaySize.MEDIUM:
+            return 3
+        elif self.display_density == Gallery.DisplaySize.LARGE:
+            return 2
 
 def set_image_name_on_upload(instance, filename):
     file_ext = filename.rsplit('.', 1)[1]

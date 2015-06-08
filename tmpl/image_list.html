@@ -26,7 +26,7 @@
                 {% for object in images %}
                     {# Each "contact" is a Contact model object. #}
 
-                    <div class="col s4 m4">
+                    <div class="col {{ gallery.template_display_class }}">
                         <div class="card">
                             <div class="card-image">
                                 <img src="{{ object.default.url }}">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    {% if forloop.counter|divisibleby:3 %}
+                    {% if forloop.counter|divisibleby:gallery.template_divisibility %}
                         <div class="row">
                         </div>
                     {% endif %}

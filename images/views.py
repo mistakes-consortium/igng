@@ -60,7 +60,7 @@ def user_default_gallery_images(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         imgs = paginator.page(paginator.num_pages)
 
-    context = RequestContext(request, {"images": imgs})
+    context = RequestContext(request, {"images": imgs, "gallery": gallery})
     return render_to_response('image_list.html', context)
 
 
@@ -83,6 +83,7 @@ def user_get_gallery_images(request, obj_uuid):
     context = RequestContext(request, {
         "images": imgs,
         "gallery_name": gallery.title,
+        "gallery": gallery
     })
     return render_to_response('image_list.html', context)
 

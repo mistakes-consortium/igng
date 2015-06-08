@@ -11,4 +11,4 @@ class ImageUploadForm(forms.ModelForm):
 class GallerySettingsForm(forms.ModelForm):
     class Meta:
         model = Gallery
-        fields = ('rel_start', 'rel_end', 'title') #'private'
+        fields = ('rel_start', 'rel_end', 'title', 'display_density') #'private'
