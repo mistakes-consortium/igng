@@ -6,18 +6,23 @@ It's an image gallery that wont log you out randomly.
 
 ### Features
 
-- tags
-- uploads
 - bbcode generator
 - users featured imgs
-- allauth ( persona for @wcummings )
+- upload to gallery
+- single image view / lightbox
+- delete images/galleries
+- short/long term permalinks
 
-### Stuff
+### Stuff 
 
+- Do something with tags
+- Expose EXIF
+- Moderate Brandability
+- Better Admin
 - API Serializers
 - API Endpoints
-- Frontend
-- Better Admin
+- More Empty Gallery Images
+- Bulk uploads
 
 ## Done
 
@@ -27,10 +32,14 @@ It's an image gallery that wont log you out randomly.
 - unix timestamps
 - exif extraction
 - no logoutz
+- tags
+- uploads
+- allauth ( persona for @wcummings )
 
 ### Stuff
 
+- Frontend
 - Models
-- EXIF
+- EXIF Extraction
 - Image/Gallery Serializers
 - Image/Gallery Endpoints
