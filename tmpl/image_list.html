@@ -34,7 +34,6 @@
                             </div>
                             <div class="card-content">
                                 {% if object.tags.exists %}
-                                    {#                <p>Tags: {{ object.tags.all|join:" ," }}</p>#}
                                     <p>
                                         {% for t in object.tags.all %}
                                             <a class="waves-effect waves-light btn orange">{{ t }}</a>
@@ -58,6 +57,10 @@
                         <div class="row">
                         </div>
                     {% endif %}
+                {% empty %}
+                    <div class="row center">
+                        <h1 class="header center orange-text">No Images</h1>
+                    </div>
                 {% endfor %}
             </div>
             <div class="row">

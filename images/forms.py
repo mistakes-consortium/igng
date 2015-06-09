@@ -12,3 +12,9 @@ class GallerySettingsForm(forms.ModelForm):
     class Meta:
         model = Gallery
         fields = ('rel_start', 'rel_end', 'title', 'display_density') #'private'
+
+
+class GalleryCreateForm(GallerySettingsForm):
+    class Meta:
+        model = Gallery
+        fields = ('title', 'rel_start', 'rel_end', 'display_density', 'private')

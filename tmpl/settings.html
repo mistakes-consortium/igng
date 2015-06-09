@@ -20,12 +20,14 @@
             <div class="row">
                 <div class="collection">
                     {% if user.password %}
-                        <a href="{% url "account_change_password" %}" class="collection-item">Change Password</a>
+                        <a href="{% url "account_change_password" %}" title="Change Password" class="collection-item">Change Password</a>
                     {% else %}
-                        <a href="{% url "account_set_password" %}" class="collection-item">Set Password</a>
+                        <a href="{% url "account_set_password" %}" title="Set Password" class="collection-item">Set Password</a>
                     {% endif %}
-                    <a href="{% url "socialaccount_connections" %}" class="collection-item">Social Auth</a>
+                    <a href="{% url "socialaccount_connections" %}" title="Social Auth" class="collection-item">Social Auth</a>
+                    <a href="{% url "account_logout" %}" title="Sign Out" class="collection-item">Sign Out</a>
                     <a href="#!" class="collection-item">TODO add Other Things </a>
+
                 </div>
             </div>
         </div>

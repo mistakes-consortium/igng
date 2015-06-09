@@ -25,9 +25,9 @@
           <li><a href="{% url "usersettings" %}" title="Your Account">
               <i class="mdi-action-settings-applications"></i>
           </a></li>
-          <li><a href="{% url "account_logout" %}" title="Logout">
-              <i class="mdi-action-exit-to-app"></i>
-          </a></li>
+{#          <li><a href="{% url "account_logout" %}" title="Logout">#}
+{#              <i class="mdi-action-exit-to-app"></i>#}
+{#          </a></li>#}
         {% else %}
           <li><a href="{% url "account_login" %}"><i class="mdi-action-account-circle"></i></a></li>
         {% endif %}

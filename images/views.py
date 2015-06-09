@@ -6,7 +6,7 @@ from django.shortcuts import render, render_to_response, redirect, get_object_or
 
 # Create your views here.
 from django.template.context import RequestContext
-from images.forms import ImageUploadForm, GallerySettingsForm
+from images.forms import ImageUploadForm, GallerySettingsForm, GalleryCreateForm
 from images.models import Image, Gallery
 
 
@@ -15,6 +15,7 @@ def index(request):
     return render_to_response("index.html", context)
 
 
+@login_required
 def upload(request):
     context = {}
     if request.method == 'POST':
@@ -35,7 +36,7 @@ def upload(request):
     context = RequestContext(request, context)
     return render(request, "upload.html", context)
 
-
+@login_required
 def upload_success(request, obj_uuid):
     context = {}
     object = get_object_or_404(Image, uuid=obj_uuid)
@@ -62,6 +63,26 @@ def user_default_gallery_images(request):
 
     context = RequestContext(request, {"images": imgs, "gallery": gallery})
     return render_to_response('image_list.html', context)
+
+
+@login_required
+def user_create_gallery(request):
+    context = {}
+    if request.method == 'POST':
+        form = GalleryCreateForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+
+            # fill some stuff
+            obj.user = request.user
+            obj.save()
+            return redirect("gallery_list")
+    else:
+        form = GalleryCreateForm()
+
+    context['form'] = form
+    context = RequestContext(request, context)
+    return render(request, "gallery_settings.html", context)
 
 
 @login_required

@@ -3,14 +3,17 @@
 
 {% block hero %}
     <div class="section no-pad-bot" id="index-banner">
+        <div class="right">
+            <a href="{% url "user_gallery_create" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+        </div>
         <div class="container">
             <h1 class="header center purple-text">iGNG</h1>
-
             <div class="row center">
                 <h5 class="header col s12 light">Your Galleries</h5>
             </div>
         </div>
     </div>
+
 {% endblock %}
 {% block contentarea %}
 
@@ -26,7 +29,7 @@
                                     {% if object.has_images %}
                                         <img src="{{ object.rand_img.preview.url }}">
                                     {% else %}
-                                        <img src="#">
+                                        <img src="{% static "img/placeholder_400x150_a.png" %}"/>
                                     {% endif %}
                                     <span class="card-title">{{ object.title }}</span>
                                 </a>
@@ -43,7 +46,8 @@
                                 {% endif %}
                             </div>
                             <div class="card-action">
-                                <a class="right" href="{% url "user_gallery_settings" object.uuid %}"><i class="small mdi-action-settings"></i></a>
+                                <a class="right" href="{% url "user_gallery_settings" object.uuid %}"><i
+                                        class="small mdi-action-settings"></i></a>
                                 <a href="{% url "user_gallery_privacy_toggle" object.uuid %}">
                                     {% if object.private %}
                                         Currently Private
@@ -56,23 +60,30 @@
                             </div>
                         </div>
                     </div>
+                {% empty %}
+                    <div class="row center">
+                        <h1 class="header center orange-text">No Galleries</h1>
+                    </div>
                 {% endfor %}
             </div>
             <div class="row">
                 <ul class="pagination">
                     {% if galleries.has_previous %}
-                       <li><a href="?page={{ galleries.previous_page_number }}"><i class="mdi-navigation-chevron-left"></i></a></li>
+                        <li><a href="?page={{ galleries.previous_page_number }}"><i
+                                class="mdi-navigation-chevron-left"></i></a></li>
                     {% else %}
                         <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-left"></i></a></li>
                     {% endif %}
 
                     {% for p in galleries.paginator.page_range %}
-                        <li class="orange darken-3 waves-effect{% if p == galleries.number %} active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
+                        <li class="orange darken-3 waves-effect{% if p == galleries.number %} active{% endif %}"><a
+                                href="?page={{ p }}">{{ p }}</a></li>
                     {% endfor %}
 
 
                     {% if galleries.has_next %}
-                       <li><a href="?page={{ galleries.next_page_number }}"><i class="mdi-navigation-chevron-ri"></i></a></li>
+                        <li><a href="?page={{ galleries.next_page_number }}"><i
+                                class="mdi-navigation-chevron-ri"></i></a></li>
                     {% else %}
                         <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-right"></i></a></li>
                     {% endif %}
