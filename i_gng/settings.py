@@ -46,7 +46,9 @@ INSTALLED_APPS = (
     'rest_framework',
 
     # some niceties for forms
-    'materializecssform',
+    # 'materializecssform',
+    'crispy_forms',
+    'crispy_forms_materialize',
 
     # dat shell_plus && UUIDfield
     'django_extensions',
@@ -160,6 +162,10 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_URL = reverse_lazy('account_login')
 
 SITE_ID = 1
+
+# other configs
+
+CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
 
 try:
     path = os.path.join(BASE_DIR, "i_gng", "local_settings.py")

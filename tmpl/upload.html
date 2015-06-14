@@ -1,35 +1,35 @@
 {% extends "igng_base.html" %}
 {% load staticfiles %}
-{% load materializecss %}
+{% load crispy_forms_tags %}
 
-  {% block hero %}
-  <div class="section no-pad-bot" id="index-banner">
+
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">Upload</h5>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block contentarea %}
+
     <div class="container">
-      <h1 class="header center purple-text">iGNG</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">Upload</h5>
-      </div>
-
+        <div class="section">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% crispy form form.helper %}
+            </form>
+        </div>
     </div>
-  </div>
-  {% endblock %}
-  {% block contentarea %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select').material_select();
+        });
 
-  <div class="container">
-    <div class="section">
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|materializecss }}
-            <input type="submit" value="Submit" />
-        </form>
-    </div>
-  </div>
-  {% endblock %}
+    </script>
+{% endblock %}
 
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="{% static "js/materialize.js" %}"></script>
-  <script src="{% static "js/init.js" %}"></script>
 
-  </body>
-</html>

@@ -105,7 +105,7 @@ class Image(models.Model):
 
     title = models.CharField(max_length=256, null=True, blank=True)
 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     uuid = ShortUUIDField(db_index=True)
 
     original = models.ImageField(

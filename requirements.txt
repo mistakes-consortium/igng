@@ -1,7 +1,9 @@
 Django==1.8.2
 Pillow==2.6.1
+crispy-forms-materialize==0.1
 django-allauth==0.20.0
 django-appconf==0.6
+django-crispy-forms==1.4.0
 django-enumfields==0.7.3
 django-extensions==1.4.6
 django-filter==0.8

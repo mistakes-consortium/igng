@@ -1,42 +1,46 @@
 {% extends "igng_base.html" %}
 {% load staticfiles %}
-{% load materializecss %}
+{% load crispy_forms_tags %}
 
-  {% block hero %}
-  <div class="section no-pad-bot" id="index-banner">
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">
+                    {% if gallery %}
+                        Gallery Settings For {{ gallery.title }}
+                    {% else %}
+                        Create Gallery
+                    {% endif %}
+                </h5>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block contentarea %}
+
     <div class="container">
-      <h1 class="header center purple-text">iGNG</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">
-            {% if gallery %}
-            Gallery Settings For {{ gallery.title }}
-            {% else %}
-            Create Gallery
-            {% endif %}
-        </h5>
-      </div>
+        <div class="section">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% crispy form form.helper %}
 
+            </form>
+        </div>
     </div>
-  </div>
-  {% endblock %}
-  {% block contentarea %}
+{% endblock %}
 
-  <div class="container">
-    <div class="section">
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|materializecss }}
-            <br />
-            <input type="submit" value="Submit" />
-        </form>
-    </div>
-  </div>
-  {% endblock %}
-
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="{% static "js/materialize.js" %}"></script>
-  <script src="{% static "js/init.js" %}"></script>
-
-  </body>
-</html>
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year
+                format: 'yyyy-mm-dd'
+            });
+            $('select').material_select();
+        });
+    </script>
+{% endblock %}
