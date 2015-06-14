@@ -6,7 +6,6 @@ It's an image gallery that wont log you out randomly.
 
 ### Features
 
-- make all form features work [crispy-forms-materialize + django-crispy-forms]
 - bbcode generator
 - users featured imgs
 - upload to gallery
@@ -36,6 +35,7 @@ It's an image gallery that wont log you out randomly.
 - tags
 - uploads
 - allauth ( persona for @wcummings )
+- make all form features work [crispy-forms-materialize + django-crispy-forms]
 
 ### Stuff
 
