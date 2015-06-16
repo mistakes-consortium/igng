@@ -111,6 +111,10 @@ class Image(models.Model):
     original = models.ImageField(
         upload_to=set_image_name_on_upload,
     )
+
+    def self_uuid(self):
+        return self.uuid
+
     full_fixed = ImageSpecField(
         source="original",
         processors=[Transpose()],
@@ -120,31 +124,31 @@ class Image(models.Model):
         source="full_fixed",
         processors=[SmartResize(1440, 1080)],
         format="JPEG",
-        options={'quality': 80}
+        options={'quality': 80, 'prefix':"b"}
     )
     default = ImageSpecField(
         source="full_fixed",
         processors=[SmartResize(720, 540)],
         format="JPEG",
-        options={'quality': 80}
+        options={'quality': 80, 'prefix':"d"}
     )
     preview = ImageSpecField(
         source="full_fixed",
         processors=[SmartResize(320, 240)],
         format="JPEG",
-        options={'quality': 80}
+        options={'quality': 80, 'prefix':"p"}
     )
     thumb = ImageSpecField(
         source="full_fixed",
         processors=[SmartResize(160, 120)],
         format="JPEG",
-        options={'quality': 60},
+        options={'quality': 60, 'prefix':"t"},
     )
     tiny_thumb = ImageSpecField(
         source="full_fixed",
         processors=[SmartResize(80, 60)],
         format="JPEG",
-        options={'quality': 40},
+        options={'quality': 40,  'prefix':"tt"},
     )
 
     exif_data = models.ManyToManyField("EXIFEntry", null=True, blank=True)

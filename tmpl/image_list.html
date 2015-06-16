@@ -39,28 +39,66 @@
 
                     <div class="col {{ gallery.template_display_class }}">
                         <div class="card">
-                            <div class="card-image">
-                                <img src="{{ object.default.url }}">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activator" src="{{ object.default.url }}">
                                 <span class="card-title">{{ object.title }}</span>
                             </div>
                             <div class="card-content">
+                                <i class="mdi-navigation-more-vert right activator"></i>
                                 {% if object.tags.exists %}
                                     <p>
                                         {% for t in object.tags.all %}
-                                            <a class="waves-effect waves-light btn orange">{{ t }}</a>
+                                            <a class="">{{ t }}</a>
                                         {% endfor %}
                                     </p>
                                 {% else %}
                                     <p class="grey-text lighten-1">No Tags</p>
                                 {% endif %}
                             </div>
-                            <div class="card-action">
-                                <a href="{{ object.full_fixed.url }}">Full Size</a>
-                                <a href='{{ object.bigger.url }}'>Bigger</a>
-                                <a href='{{ object.default.url }}'>Default Size</a>
-                                <a href='{{ object.preview.url }}'>Preview Size</a>
-                                <a href='{{ object.thumb.url }}'>Thumbnail</a>
-                                <a href='{{ object.tiny_thumb }}'>Tiny Thumbnail</a>
+{#                            <div class="card-action">#}
+
+{#                            </div>#}
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi-navigation-close right"></i></span>
+                                <div class="card-action">
+                                    <a href="{{ object.full_fixed.url }}">Full Size</a>
+                                    <a href='{{ object.bigger.url }}'>Bigger</a>
+                                    <a href='{{ object.default.url }}'>Default Size</a>
+                                    <a href='{{ object.preview.url }}'>Preview Size</a>
+                                    <a href='{{ object.thumb.url }}'>Thumbnail</a>
+                                    <a href='{{ object.tiny_thumb }}'>Tiny Thumbnail</a>
+                                </div>
+                                <div class="card-action">
+                                    <div class="row">
+                                        <div class="col s4">&emsp;</div>
+                                        <div class="col s4">
+                                            <div class="card-panel teal">
+                                                k
+                                            </div>
+                                        </div>
+                                        <div class="col s4">Default</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s4">BBCode</div>
+                                        <div class="col s4">2</div>
+                                        <div class="col s4">3</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s4">LinkedBB</div>
+                                        <div class="col s4">2</div>
+                                        <div class="col s4">3</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s4">MarkDown</div>
+                                        <div class="col s4">2</div>
+                                        <div class="col s4">3</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s4">HTML</div>
+                                        <div class="col s4">2</div>
+                                        <div class="col s4">3</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

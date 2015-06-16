@@ -166,6 +166,8 @@ SITE_ID = 1
 # other configs
 
 CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
+# IMAGEKIT_SPEC_CACHEFILE_NAMER = 'imagekit.cachefiles.namers.source_name_as_path'
+IMAGEKIT_SPEC_CACHEFILE_NAMER = 'images.namers.igng_source_name_as_path'
 
 try:
     path = os.path.join(BASE_DIR, "i_gng", "local_settings.py")
