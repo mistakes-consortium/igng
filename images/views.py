@@ -16,15 +16,19 @@ def index(request):
 
 
 @login_required
-def upload(request):
+def upload(request, gallery_uuid=None):
     context = {}
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            obj = form.save(commit=False)
-
             # fill some stuff
-            gallery = request.user.galleries.get(title="Default")
+            if not gallery_uuid:
+                gallery = request.user.galleries.get(title="Default")
+            else:
+                galleries = Gallery.objects.notdefault(user=request.user)
+                gallery = get_object_or_404(galleries, uuid=gallery_uuid)
+
+            obj = form.save(commit=False)
             obj.gallery = gallery
             obj.user = request.user
             obj.save()
@@ -60,8 +64,12 @@ def user_default_gallery_images(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         imgs = paginator.page(paginator.num_pages)
-
-    context = RequestContext(request, {"images": imgs, "gallery": gallery})
+    context =  {
+        "images": imgs,
+        "gallery": gallery,
+        "is_default_gallery": True,
+    }
+    context = RequestContext(request, context)
     return render_to_response('image_list.html', context)
 
 
@@ -104,7 +112,8 @@ def user_get_gallery_images(request, obj_uuid):
     context = RequestContext(request, {
         "images": imgs,
         "gallery_name": gallery.title,
-        "gallery": gallery
+        "gallery": gallery,
+        "is_users_gallery": True,
     })
     return render_to_response('image_list.html', context)
 

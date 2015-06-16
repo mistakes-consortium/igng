@@ -3,9 +3,7 @@
 
 {% block hero %}
     <div class="section no-pad-bot" id="index-banner">
-        <div class="right">
-            <a href="{% url "user_gallery_create" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
-        </div>
+
         <div class="container">
             <h1 class="header center purple-text">iGNG</h1>
             <div class="row center">
@@ -18,6 +16,9 @@
 {% block contentarea %}
 
     <div class="container">
+        <div class="right-align">
+            <a href="{% url "user_gallery_create" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+        </div>
         <div class="section">
             <div class="row">
                 {% for object in galleries %}

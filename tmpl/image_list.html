@@ -21,6 +21,17 @@
 {% block contentarea %}
 
     <div class="container">
+        <div class="right-align">
+            {% if is_users_gallery %}
+                <a href="{% url "user_gallery_upload" gallery.uuid %}"
+                   class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+            {% elif is_default_gallery %}
+                <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i
+                        class="mdi-content-add"></i></a>
+            {% else %}
+                {# nothing here then #}
+            {% endif %}
+        </div>
         <div class="section">
             <div class="row">
                 {% for object in images %}
@@ -59,7 +70,17 @@
                     {% endif %}
                 {% empty %}
                     <div class="row center">
+                        <div class="right">
+                            {% if is_users_gallery %}
+                                <a href="{% url "user_gallery_upload" gallery.uuid %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+                            {% elif is_default_gallery %}
+                                <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+                            {% else %}
+                                {# nothing here then #}
+                            {% endif %}
+                        </div>
                         <h1 class="header center orange-text">No Images</h1>
+
                     </div>
                 {% endfor %}
             </div>
