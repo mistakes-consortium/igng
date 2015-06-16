@@ -6,7 +6,6 @@ It's an image gallery that wont log you out randomly.
 
 ### Features
 
-- bbcode generator
 - users featured imgs
 - single image view / lightbox
 - delete images/galleries
@@ -36,6 +35,7 @@ It's an image gallery that wont log you out randomly.
 - allauth ( persona for @wcummings )
 - make all form features work [crispy-forms-materialize + django-crispy-forms]
 - upload to gallery
+- bbcode generator
 
 ### Stuff
 
@@ -44,3 +44,8 @@ It's an image gallery that wont log you out randomly.
 - EXIF Extraction
 - Image/Gallery Serializers
 - Image/Gallery Endpoints
+
+
+#### NOTES
+
+- SITE_URL needs to be set in local_settings for bbcode and other generators to work properly

@@ -1,5 +1,6 @@
 {% extends "igng_base.html" %}
 {% load staticfiles %}
+{% load markup_tags %}
 
 {% block hero %}
     <div class="section no-pad-bot" id="index-banner">
@@ -71,32 +72,28 @@
                                 <div class="card-action">
                                     <div class="row">
                                         <div class="col s4">&emsp;</div>
-                                        <div class="col s4">
-                                            <div class="card-panel teal">
-                                                k
-                                            </div>
-                                        </div>
+                                        <div class="col s4">Full</div>
                                         <div class="col s4">Default</div>
                                     </div>
                                     <div class="row">
                                         <div class="col s4">BBCode</div>
-                                        <div class="col s4">2</div>
-                                        <div class="col s4">3</div>
+                                        <div class="col s4">{% g_bb object.full_fixed object.title %}</div>
+                                        <div class="col s4">{% g_bb object.default object.title %}</div>
                                     </div>
                                     <div class="row">
                                         <div class="col s4">LinkedBB</div>
-                                        <div class="col s4">2</div>
-                                        <div class="col s4">3</div>
+                                        <div class="col s4">{% g_bb_linked object.full_fixed object.title %}</div>
+                                        <div class="col s4">{% g_bb_linked object.default object.title %}</div>
                                     </div>
                                     <div class="row">
                                         <div class="col s4">MarkDown</div>
-                                        <div class="col s4">2</div>
-                                        <div class="col s4">3</div>
+                                        <div class="col s4">{% g_markdown object.full_fixed object.title %}</div>
+                                        <div class="col s4">{% g_markdown object.default object.title %}</div>
                                     </div>
                                     <div class="row">
                                         <div class="col s4">HTML</div>
-                                        <div class="col s4">2</div>
-                                        <div class="col s4">3</div>
+                                        <div class="col s4">{% g_html object.full_fixed object.title %}</div>
+                                        <div class="col s4">{% g_html object.default object.title %}</div>
                                     </div>
                                 </div>
                             </div>
