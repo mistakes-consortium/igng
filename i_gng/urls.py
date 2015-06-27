@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^i/', include("images.urls")),
 
-    # url(r'$', RedirectView.as_view(url='i/'))
+    url(r'$', "images.views.index")
 )
 
 if settings.DEBUG:
