@@ -59,6 +59,9 @@ INSTALLED_APPS = (
     # for tagging
     'taggit',
 
+    # for logging
+    'raven.contrib.django.raven_compat',
+
     # for auth
     'allauth',
     'allauth.account',
