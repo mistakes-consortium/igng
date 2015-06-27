@@ -172,6 +172,13 @@ CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
 # IMAGEKIT_SPEC_CACHEFILE_NAMER = 'imagekit.cachefiles.namers.source_name_as_path'
 IMAGEKIT_SPEC_CACHEFILE_NAMER = 'images.namers.igng_source_name_as_path'
 
+SOCIALACCOUNT_PROVIDERS = {
+    'persona':
+         {'AUDIENCE': 'http://i.gng.io',
+          'REQUEST_PARAMETERS': {'siteName': 'iGNG'}
+         }
+    }
+
 try:
     path = os.path.join(BASE_DIR, "i_gng", "local_settings.py")
     f = open(path)
