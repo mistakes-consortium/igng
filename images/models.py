@@ -211,3 +211,4 @@ class EXIFEntry(models.Model):
 
 
 # from images.signals import update_exif
+from images.signals import create_default_gallery
