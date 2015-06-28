@@ -82,7 +82,7 @@ def user_create_gallery(request):
             # fill some stuff
             obj.user = request.user
             obj.save()
-            return redirect("gallery_list")
+            return redirect("user_galleries")
     else:
         form = GalleryCreateForm()
 
