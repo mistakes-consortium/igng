@@ -4,9 +4,10 @@ from pilkit.utils import suggest_extension
 import shortuuid
 
 
-def generate_file_name(generator):
+def generate_file_name(generator, sourcename):
     return "%s_%s" % (
-        shortuuid.uuid(),
+        # shortuuid.uuid(),
+        sourcename.split('.')[0],
         generator.options.get('prefix'),
     )
 
@@ -31,5 +32,5 @@ def igng_source_name_as_path(generator):
 
     # generate a better filename
 
-    joined = os.path.normpath(os.path.join(directory, '%s%s' % (generate_file_name(generator), ext)))
+    joined = os.path.normpath(os.path.join(directory, '%s%s' % (generate_file_name(generator, source_filename), ext)))
     return joined

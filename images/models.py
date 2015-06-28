@@ -5,6 +5,7 @@ from django.db import models
 # Create your models here.
 from django_extensions.db.fields import ShortUUIDField
 from enumfields import EnumIntegerField, Enum
+from imagekit.cachefiles import ImageCacheFile
 from imagekit.models.fields import ProcessedImageField
 from imagekit.models.fields import ImageSpecField
 from pilkit.processors.base import Transpose
@@ -181,6 +182,29 @@ class Image(models.Model):
                 ee, ce = EXIFEntry.objects.get_or_create(key=ek, value=ev)
                 self.exif_data.add(ee)
 
+    def cached_full_fixed(self):
+        generator = ImageCacheFile(self.full_fixed)
+        return generator.generate()
+    
+    def cached_bigger(self):
+        generator = ImageCacheFile(self.bigger)
+        return generator.generate()
+    
+    def cached_default(self):
+        generator = ImageCacheFile(self.default)
+        return generator.generate()
+    
+    def cached_preview(self):
+        generator = ImageCacheFile(self.preview)
+        return generator.generate()
+    
+    def cached_thumb(self):
+        generator = ImageCacheFile(self.thumb)
+        return generator.generate()
+    
+    def cached_tiny_thumb(self):
+        generator = ImageCacheFile(self.tiny_thumb)
+        return generator.generate()
 
 class FeaturedImage(models.Model):
     user = models.ForeignKey(User)

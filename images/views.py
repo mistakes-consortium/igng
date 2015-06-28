@@ -52,17 +52,15 @@ def upload_success(request, obj_uuid):
 @login_required
 def user_default_gallery_images(request):
     gallery = request.user.galleries.default(request.user)
-    images = gallery.images.all()
+    images = gallery.images.all().prefetch_related('tags')
 
     paginator = Paginator(images, 12)
     page = request.GET.get('page')
     try:
         imgs = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
         imgs = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
         imgs = paginator.page(paginator.num_pages)
     context =  {
         "images": imgs,
@@ -120,7 +118,7 @@ def user_get_gallery_images(request, obj_uuid):
 
 @login_required
 def user_galleries(request):
-    galleries = request.user.galleries.notdefault(request.user)
+    galleries = request.user.galleries.notdefault(request.user).prefetch_related("images")
 
     paginator = Paginator(galleries, 12)
     page = request.GET.get('page')

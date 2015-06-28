@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'debug_toolbar',
+
 
     # the most necessary tool of all
     'rest_framework',
