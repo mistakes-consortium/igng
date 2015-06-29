@@ -15,6 +15,7 @@ def index(request):
     return render_to_response("index.html", context)
 
 
+# user facing views
 @login_required
 def upload(request, gallery_uuid=None):
     context = {}
@@ -171,3 +172,28 @@ def user_gallery_settings(request, obj_uuid):
 def user_settings(request):
     context = RequestContext(request)
     return render_to_response("settings.html", context)
+
+
+# potentially external views
+def linked_gallery_view(request, obj_uuid):
+    """
+    View For Permalinks
+    """
+    gallery = get_object_or_404(Gallery, uuid=obj_uuid)
+    images = gallery.images.all()
+
+    paginator = Paginator(images, 12)
+    page = request.GET.get('page')
+    try:
+        imgs = paginator.page(page)
+    except PageNotAnInteger:
+        imgs = paginator.page(1)
+    except EmptyPage:
+        imgs = paginator.page(paginator.num_pages)
+    context =  {
+        "images": imgs,
+        "gallery": gallery,
+        "gallery_name": gallery.title
+    }
+    context = RequestContext(request, context)
+    return render_to_response('image_list.html', context)

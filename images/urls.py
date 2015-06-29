@@ -18,5 +18,7 @@ urlpatterns = patterns('images.views',
     url(r'^g/up/(?P<gallery_uuid>[\w-]+)$', views.upload, name="user_gallery_upload"),
     url(r'^g/(?P<obj_uuid>[\w-]+)/toggle_priv$', views.user_gallery_priv_toggle, name="user_gallery_privacy_toggle"),
     url(r'^g/(?P<obj_uuid>[\w-]+)/settings', views.user_gallery_settings, name="user_gallery_settings"),
+
+    url(r'^g/p/(?P<obj_uuid>[\w-]+)/', views.linked_gallery_view, name="gallery_permalink"),
     url(r'^api/', include(router.urls, namespace='api')),
 )
