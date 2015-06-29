@@ -234,5 +234,5 @@ class EXIFEntry(models.Model):
         return "<ExifEntry(%s:%s)>" % (self.key, self.value)
 
 
-# from images.signals import update_exif
+### from images.signals import update_exif
 from images.signals import create_default_gallery

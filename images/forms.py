@@ -21,6 +21,7 @@ class ImageUploadForm(forms.ModelForm):
         fields = ('title', 'original', 'tags')
 
 
+# TODO validate the unique_together here :<
 class GallerySettingsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(GallerySettingsForm, self).__init__(*args, **kwargs)
@@ -46,3 +47,4 @@ class GalleryCreateForm(GallerySettingsForm):
     class Meta:
         model = Gallery
         fields = ('title', 'rel_start', 'rel_end', 'display_density', 'private')
+

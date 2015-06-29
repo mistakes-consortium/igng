@@ -8,7 +8,7 @@ import time
 
 
 # this doesn't actually work because its dumb.
-@receiver(post_save, sender=Image)
+# @receiver(post_save, sender=Image)
 def update_exif(sender, instance, created, **kwargs):
     if created:
         instance.query_exif()
