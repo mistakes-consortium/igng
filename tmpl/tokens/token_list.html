@@ -1,0 +1,44 @@
+{% extends "igng_base.html" %}
+
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">
+                    User Auth Token
+                </h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block contentarea %}
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if not tokens %}
+        <div class="right-align">
+            <a href="{% url "token_add" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+        </div>
+        {% endif %}
+        <div class="section">
+            <div class="row">
+                 <ul class="collection with-header">
+                    {% for t in tokens %}
+                         <li class="collection-item"><div>{{ t }}<a href="{% url "token_remove" t.pk %}" class="secondary-content"><i class="mdi-navigation-cancel"></i></a></div></li>
+                    {% empty %}
+                         <li class="collection-header"><h4>Add A Token Above</h4></li>
+                    {% endfor %}
+                 </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -43,7 +43,9 @@
                     <div class="col {{ gallery.template_display_class }}">
                         <div class="card">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <img class="activator" src="{{ object.default.url }}">
+                                <a class="boxme" href="{{ object.bigger.url }}">
+                                    <img src="{{ object.default.url }}" />
+                                </a>
                                 <span class="card-title">{{ object.title }}</span>
                             </div>
                             <div class="card-content">
@@ -145,3 +147,9 @@
     </div>
 {% endblock %}
 
+
+{% block scripts %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/css/fluidbox.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.min.js"></script>
+{% endblock %}

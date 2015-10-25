@@ -46,6 +46,7 @@ INSTALLED_APPS = (
 
     # the most necessary tool of all
     'rest_framework',
+     'rest_framework.authtoken',
 
     # some niceties for forms
     # 'materializecssform',
@@ -77,8 +78,10 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.persona',
     # 'allauth.socialaccount.providers.stackexchange',
     # 'allauth.socialaccount.providers.twitter',
-    # our app
+
+    # our apps
     'images',
+    'token_mgmt',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -180,6 +183,13 @@ SOCIALACCOUNT_PROVIDERS = {
           'REQUEST_PARAMETERS': {'siteName': 'iGNG'}
          }
     }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 try:
     path = os.path.join(BASE_DIR, "i_gng", "local_settings.py")

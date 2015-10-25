@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     (r'^a/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^i/', include("images.urls")),
+    url(r'^t/', include("token_mgmt.urls")),
 
     url(r'$', "images.views.index")
 )
