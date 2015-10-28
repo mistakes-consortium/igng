@@ -53,7 +53,7 @@ class Gallery(models.Model):
             MEDIUM = "Three Images Per Row"
             LARGE = "Two Images Per Row"
 
-    display_density = EnumIntegerField(DisplaySize, max_length=1, default=2)
+    display_density = EnumIntegerField(DisplaySize, default=2)
 
     def __unicode__(self):
         return self.title
@@ -152,7 +152,7 @@ class Image(models.Model):
         options={'quality': 40,  'prefix':"tt"},
     )
 
-    exif_data = models.ManyToManyField("EXIFEntry", null=True, blank=True)
+    exif_data = models.ManyToManyField("EXIFEntry", blank=True)
 
     @property
     def uuid_as_b64(self):

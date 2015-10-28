@@ -56,4 +56,4 @@ class ImageUploadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        field = ('user', 'gallery', 'title', 'tags', 'original')
+        fields = ('user', 'gallery', 'title', 'original')
