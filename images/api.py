@@ -135,7 +135,7 @@ class PasteImageViewSet(mixins.CreateModelMixin, GenericViewSet):
     def create(self, request, *args, **kwargs):
         serialized = PasteImageUploadSerializer(data=request.data, context={'request': request})
         serialized.is_valid(raise_exception=True)
-        if not 'gallery' in serialized.validated_data == None:
+        if not 'gallery' in serialized.validated_data:
             serialized.validated_data['gallery'] = Gallery.objects.default(request.user)
         serialized.validated_data['user_id'] = request.user.pk
         o = serialized.save()
