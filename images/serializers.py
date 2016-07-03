@@ -1,4 +1,8 @@
 import datetime
+
+from rest_framework.reverse import reverse
+
+from images.fields import Base64ImageField
 from images.models import Gallery, Image, EXIFEntry
 from rest_framework import serializers
 import pytz
@@ -57,3 +61,24 @@ class ImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ('user', 'gallery', 'title', 'original')
+
+class PasteImageUploadSerializer(serializers.ModelSerializer):
+    original = Base64ImageField(max_length=None, use_url=True,)
+    class Meta:
+        model = Image
+        fields = ('original',)
+
+class PasteReturnSerializer(serializers.ModelSerializer):
+    tiny_thumb_url = serializers.SerializerMethodField()
+    image_page = serializers.SerializerMethodField()
+    class Meta:
+        model = Image
+        fields = ('tiny_thumb_url', 'image_page')
+        # fields = ("original", )
+
+    def get_tiny_thumb_url(self, obj):
+        # print dir(obj)
+        return obj.tiny_thumb.url
+
+    def get_image_page(self, obj):
+        return reverse("upload_success", args=[obj.uuid])

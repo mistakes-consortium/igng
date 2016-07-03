@@ -27,10 +27,10 @@
         <div class="right-align">
             {% if is_users_gallery %}
                 <a href="{% url "user_gallery_upload" gallery.uuid %}"
-                   class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+                   class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
             {% elif is_default_gallery %}
                 <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i
-                        class="mdi-content-add"></i></a>
+                        class="mdi mdi-plus"></i></a>
             {% else %}
                 {# nothing here then #}
             {% endif %}
@@ -49,7 +49,7 @@
                                 <span class="card-title">{{ object.title }}</span>
                             </div>
                             <div class="card-content">
-                                <i class="mdi-navigation-more-vert right activator"></i>
+                                <i class="mdi mdi-dots-vertical right activator"></i>
                                 {% if object.tags.exists %}
                                     <p>
                                         {% for t in object.tags.all %}
@@ -64,7 +64,7 @@
 
 {#                            </div>#}
                             <div class="card-reveal">
-                                <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi-navigation-close right"></i></span>
+                                <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
                                 <div class="card-action">
                                     <a href="{{ object.full_fixed.url }}">Full Size</a>
                                     <a href='{{ object.bigger.url }}'>Bigger</a>
@@ -111,9 +111,9 @@
                     <div class="row center">
                         <div class="right">
                             {% if is_users_gallery %}
-                                <a href="{% url "user_gallery_upload" gallery.uuid %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+                                <a href="{% url "user_gallery_upload" gallery.uuid %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
                             {% elif is_default_gallery %}
-                                <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+                                <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
                             {% else %}
                                 {# nothing here then #}
                             {% endif %}
@@ -126,9 +126,9 @@
             <div class="row">
                 <ul class="pagination">
                     {% if images.has_previous %}
-                       <li><a href="?page={{ images.previous_page_number }}"><i class="mdi-navigation-chevron-left"></i></a></li>
+                       <li><a href="?page={{ images.previous_page_number }}"><i class="mdi mdi-chevron-left"></i></a></li>
                     {% else %}
-                        <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-left"></i></a></li>
+                        <li class="disabled"><a href="#"><i class="mdi mdi-chevron-left"></i></a></li>
                     {% endif %}
 
                     {% for p in images.paginator.page_range %}
@@ -137,9 +137,9 @@
 
 
                     {% if images.has_next %}
-                       <li><a href="?page={{ images.next_page_number }}"><i class="mdi-navigation-chevron-ri"></i></a></li>
+                       <li><a href="?page={{ images.next_page_number }}"><i class="mdi mdi-chevron-right"></i></a></li>
                     {% else %}
-                        <li class="disabled"><a href="#"><i class="mdi-navigation-chevron-right"></i></a></li>
+                        <li class="disabled"><a href="#"><i class="mdi mdi-chevron-right"></i></a></li>
                     {% endif %}
                 </ul>
             </div>

@@ -1,14 +1,20 @@
+from base64 import b64decode
+
 from django.db.models import Q
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route, list_route
+from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins
 
 from images.models import Gallery, Image
-from images.serializers import GallerySerializer, ImageSerializer, ImageUploadSerializer
+from images.serializers import GallerySerializer, ImageSerializer, ImageUploadSerializer, PasteImageUploadSerializer, \
+    PasteReturnSerializer
 
 
 class PublicGalleryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -122,3 +128,16 @@ class ImageViewSet(viewsets.ModelViewSet):
 
         ret = {"status":"EXIF_QUERIED"}
         return Response(ret, status=status.HTTP_201_CREATED)
+
+
+class PasteImageViewSet(mixins.CreateModelMixin, GenericViewSet):
+    def create(self, request, *args, **kwargs):
+        serialized = PasteImageUploadSerializer(data=request.data)
+        serialized.is_valid(raise_exception=True)
+        serialized.validated_data['gallery_id'] = Gallery.objects.default(request.user).pk
+        serialized.validated_data['user_id'] = request.user.pk
+        o = serialized.save()
+        headers = self.get_success_headers(serialized.data)
+        re_serialized = PasteReturnSerializer(instance=o)
+        return Response(re_serialized.data, status=status.HTTP_201_CREATED, headers=headers)
+        # super(PasteImageViewSet, self).create(request, *args, **kwargs)

@@ -2,151 +2,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-  <title>iGNG - {% block title %}Base{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>iGNG - {% block title %}Base{% endblock %}</title>
 
-  <!-- CSS  -->
-  <link href="{% static "css/materialize.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="{% static "css/style.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <!-- CSS  -->
+    <link href="{% static "css/materialize.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{% static "css/style.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="//cdn.materialdesignicons.com/1.6.50/css/materialdesignicons.min.css" type="text/css" rel="stylesheet" media="screen,projection">
 </head>
 <body>
-  {% block nav %}
-  <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="/i/" class="brand-logo">iGNG</a>
-      <ul class="right hide-on-med-and-down">
-        {% if request.user.is_authenticated %}
-          <li><a href="{% url "user_images" %}" title="Your Images">
-              <i class="mdi-image-crop-original"></i>
-          </a></li>
-          <li><a href="{% url "user_galleries" %}" title="Your Galleries">
-              <i class="mdi-image-collections"></i>
-          </a></li>
-          <li><a href="{% url "usersettings" %}" title="Your Account">
-              <i class="mdi-action-settings-applications"></i>
-          </a></li>
-{#          <li><a href="{% url "account_logout" %}" title="Logout">#}
-{#              <i class="mdi-action-exit-to-app"></i>#}
-{#          </a></li>#}
-        {% else %}
-          <li><a href="{% url "account_login" %}"><i class="mdi-action-account-circle"></i></a></li>
-        {% endif %}
-      </ul>
+{% block nav %}
+    <ul id="dropdown_upload" class="dropdown-content">
+    </ul>
+    <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" href="/i/" class="brand-logo">iGNG</a>
+            <ul class="right hide-on-med-and-down">
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url "user_images" %}" title="Your Images">
+                        <i class="mdi mdi-image"></i>
+                    </a></li>
+                    <li><a href="{% url "user_galleries" %}" title="Your Galleries">
+                        <i class="mdi mdi-image-multiple"></i>
+                    </a></li>
+                    <li><a href="{% url "usersettings" %}" title="Your Account">
+                        <i class="mdi mdi-settings-box"></i>
+                    </a></li>
+                    {#          <li><a href="{% url "account_logout" %}" title="Logout">#}
+                    {#              <i class="mdi-action-exit-to-app"></i>#}
+                    {#          </a></li>#}
+                    <li id="uploadshow" style="display:None;"><a class="dropdown-button" href="#!" data-activates="dropdown_upload" data-constrainwidth="false" data-beloworigin="true"><i class="mdi mdi-upload right"></i></a></li>
+                {% else %}
+                    <li><a href="{% url "account_login" %}"><i class="mdi-action-account-circle"></i></a></li>
+                {% endif %}
+            </ul>
 
-      <ul id="nav-mobile" class="side-nav">
-        {% if request.user.is_authenticated %}
-          <li><a href="#">In</a></li>
-        {% else %}
-          <li><a href="#">Out</a></li>
-        {% endif %}
-      </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+            <ul id="nav-mobile" class="side-nav">
+                {% if request.user.is_authenticated %}
+                    <li><a href="#">In</a></li>
+                {% else %}
+                    <li><a href="#">Out</a></li>
+                {% endif %}
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+        </div>
+    </nav>
+{% endblock %}
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <br><br>
+            <h1 class="header center purple-text">Starter Template</h1>
+            <div class="row center">
+                <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+            </div>
+            <div class="row center">
+                <a href="http://materializecss.com/getting-started.html" id="download-button"
+                   class="btn-large waves-effect waves-light purple">Get Started</a>
+            </div>
+            <br><br>
+
+        </div>
     </div>
-  </nav>
-  {% endblock %}
-  {% block hero %}
-  <div class="section no-pad-bot" id="index-banner">
+{% endblock %}
+{% block contentarea %}
     <div class="container">
-      <br><br>
-      <h1 class="header center purple-text">Starter Template</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-      </div>
-      <div class="row center">
-        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light purple">Get Started</a>
-      </div>
-      <br><br>
+        <div class="section">
 
+            <!--   Icon Section   -->
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center light-blue-text"><i class="mdi-image-flash-on"></i></h2>
+                        <h5 class="center">Speeds up development</h5>
+
+                        <p class="light">We did most of the heavy lifting for you to provide a default stylings that
+                            incorporate our custom components. Additionally, we refined animations and transitions to
+                            provide a smoother experience for developers.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center light-blue-text"><i class="mdi-social-group"></i></h2>
+                        <h5 class="center">User Experience Focused</h5>
+
+                        <p class="light">By utilizing elements and principles of Material Design, we were able to create
+                            a framework that incorporates components and animations that provide more feedback to users.
+                            Additionally, a single underlying responsive system across all platforms allow for a more
+                            unified user experience.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center light-blue-text"><i class="mdi-action-settings"></i></h2>
+                        <h5 class="center">Easy to work with</h5>
+
+                        <p class="light">We have provided detailed documentation as well as specific code examples to
+                            help new users get started. We are also always open to feedback and can answer any questions
+                            a user may have about Materialize.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br><br>
+
+        <div class="section">
+
+        </div>
     </div>
-  </div>
-  {% endblock %}
-  {% block contentarea %}
-  <div class="container">
-    <div class="section">
+{% endblock %}
+{% block footer %}
+    <footer class="page-footer purple">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">iGNG</h5>
+                    <p class="grey-text text-lighten-4">This image system doesn't log you out randomly. It's pretty
+                        great.</p>
 
-      <!--   Icon Section   -->
-      <div class="row">
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="mdi-image-flash-on"></i></h2>
-            <h5 class="center">Speeds up development</h5>
 
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
-          </div>
+                </div>
+                <div class="col l3 s12">
+                    <h5 class="white-text">Settings</h5>
+                    <ul>
+                        <li><a class="white-text" href="#!">Link 1</a></li>
+                        <li><a class="white-text" href="#!">Link 2</a></li>
+                        <li><a class="white-text" href="#!">Link 3</a></li>
+                        <li><a class="white-text" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+                <div class="col l3 s12">
+                    <h5 class="white-text">Connect</h5>
+                    <ul>
+                        <li><a class="white-text" href="#!">Link 1</a></li>
+                        <li><a class="white-text" href="#!">Link 2</a></li>
+                        <li><a class="white-text" href="#!">Link 3</a></li>
+                        <li><a class="white-text" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="mdi-social-group"></i></h2>
-            <h5 class="center">User Experience Focused</h5>
-
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
-          </div>
+        <div class="footer-copyright">
+            <div class="container">
+                Made by <a class="purple-text text-lighten-3" href="https://github.com/mistakes-consortium">Mistakes
+                Consortium</a>
+            </div>
         </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="mdi-action-settings"></i></h2>
-            <h5 class="center">Easy to work with</h5>
-
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <br><br>
-
-    <div class="section">
-
-    </div>
-  </div>
-  {% endblock %}
-  {% block footer %}
-  <footer class="page-footer purple">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">iGNG</h5>
-          <p class="grey-text text-lighten-4">This image system doesn't log you out randomly. It's pretty great.</p>
+    </footer>
+{% endblock %}
 
 
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-      Made by <a class="purple-text text-lighten-3" href="https://github.com/mistakes-consortium">Mistakes Consortium</a>
-      </div>
-    </div>
-  </footer>
-  {% endblock %}
-
-
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="{% static "js/materialize.js" %}"></script>
-  {% block scripts %}
-  {% endblock %}
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.2/js.cookie.min.js"></script>
+<script src="{% static "js/materialize.js" %}"></script>
+<script src="{% static "js/img_upload.js" %}"></script>
+{% block scripts %}
+{% endblock %}
 {#  <script src="js/init.js"></script>#}
+<script>
+    $(document).ready(function () {
+        var csrftoken = Cookies.get('csrftoken');
 
-  </body>
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        };
+        function upload_storage(result){
+            $("#uploadshow").show();
+            console.table(result);
+            var str = '<li><a href="'+result.image_page+'"><img src="' + result.tiny_thumb_url + '" alt="Contact Person"></a></li>'
+            $("#dropdown_upload").append(str)
+        };
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $("html").pasteImageReader(function (results) {
+            var dataURL = results.dataURL;
+            $.ajax({
+                url: '{% url "api:images_all_upload-list" %}',
+                type: 'POST',
+                data: {
+{#                    type: 'base64',#}
+                    original: dataURL
+                },
+                dataType: 'json',
+                success:function(data) {
+                    upload_storage(data);
+                }
+            });
+            console.table(results);
+            return filename = results.filename, dataURL = results.dataURL, results;
+        });
+
+    });
+</script>
+</body>
 </html>

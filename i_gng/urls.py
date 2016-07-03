@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^i/', include("images.urls")),
     url(r'^t/', include("token_mgmt.urls")),
 
-    url(r'$', "images.views.index")
+    url(r'^$', "images.views.index")
 )
 
 if settings.DEBUG:
