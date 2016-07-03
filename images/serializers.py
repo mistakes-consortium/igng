@@ -64,9 +64,29 @@ class ImageUploadSerializer(serializers.ModelSerializer):
 
 class PasteImageUploadSerializer(serializers.ModelSerializer):
     original = Base64ImageField(max_length=None, use_url=True,)
+    gallery = serializers.SlugRelatedField(required=False, queryset=Gallery.objects.all(),slug_field="uuid")
+
+
+    def get_fields(self, *args, **kwargs):
+        fields = super(PasteImageUploadSerializer, self).get_fields(*args, **kwargs)
+        fields['gallery'].queryset = Gallery.objects.filter(user=(self.context['request'].user))
+        return fields
+
     class Meta:
         model = Image
-        fields = ('original',)
+        fields = ('original', 'gallery')
+
+    def validate_gallery(self, value):
+        u = self.context['request'].user
+        if u.galleries.filter(uuid=value.uuid).exists():
+            print "YAY"
+            return value
+        elif value == None:
+            print "NULL"
+            return value
+        print "BOO  "
+        raise serializers.ValidationError("Non-existent Gallery")
+
 
 class PasteReturnSerializer(serializers.ModelSerializer):
     tiny_thumb_url = serializers.SerializerMethodField()

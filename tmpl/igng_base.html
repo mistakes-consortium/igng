@@ -173,8 +173,8 @@
         };
         function upload_storage(result){
             $("#uploadshow").show();
-            console.table(result);
-            var str = '<li><a href="'+result.image_page+'"><img src="' + result.tiny_thumb_url + '" alt="Contact Person"></a></li>'
+{#            console.table(result);#}
+            var str = '<li><a href="'+result.image_page+'"><img src="' + result.tiny_thumb_url + '" alt="Uploaded"></a></li>'
             $("#dropdown_upload").append(str)
         };
         $.ajaxSetup({
@@ -190,7 +190,9 @@
                 url: '{% url "api:images_all_upload-list" %}',
                 type: 'POST',
                 data: {
-{#                    type: 'base64',#}
+                    {% if gallery %}
+                    gallery: '{{ gallery.uuid }}',
+                    {% endif %}
                     original: dataURL
                 },
                 dataType: 'json',
@@ -198,7 +200,7 @@
                     upload_storage(data);
                 }
             });
-            console.table(results);
+{#            console.table(results);#}
             return filename = results.filename, dataURL = results.dataURL, results;
         });
 
