@@ -49,7 +49,8 @@
                                 <span class="card-title">{{ object.title }}</span>
                             </div>
                             <div class="card-content">
-                                <i class="mdi mdi-dots-vertical right activator"></i>
+                                <i class="mdi mdi-dots-vertical right activator" tabsel="info" tabpk="{{ object.pk }}"></i>
+                                <i class="mdi mdi-message-image right activator" tabsel="settings" tabpk="{{ object.pk }}"></i>
                                 {% if object.tags.exists %}
                                     <p>
                                         {% for t in object.tags.all %}
@@ -64,42 +65,54 @@
 
 {#                            </div>#}
                             <div class="card-reveal">
-                                <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
-                                <div class="card-action">
-                                    <a href="{{ object.full_fixed.url }}">Full Size</a>
-                                    <a href='{{ object.bigger.url }}'>Bigger</a>
-                                    <a href='{{ object.default.url }}'>Default Size</a>
-                                    <a href='{{ object.preview.url }}'>Preview Size</a>
-                                    <a href='{{ object.thumb.url }}'>Thumbnail</a>
-                                    <a href='{{ object.tiny_thumb }}'>Tiny Thumbnail</a>
+                                <ul id="t{{ object.pk }}tabdad" class="tabs" style="display: None;">
+                                    <li class="tab col s3"><a id="t{{ object.pk }}infoq" href="#t{{ object.pk }}info">Info</a></li>
+                                    <li class="tab col s3"><a id="t{{ object.pk }}settingsq" href="#t{{ object.pk }}settings">Test 2</a></li>
+                                    <li class="tab col s3"><a href="#test4">Test 4</a></li>
+                                </ul>
+                                <div id="t{{ object.pk }}info" class="col s12">
+                                    <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
+                                    <div class="card-action">
+                                        <a href="{{ object.full_fixed.url }}">Full Size</a>
+                                        <a href='{{ object.bigger.url }}'>Bigger</a>
+                                        <a href='{{ object.default.url }}'>Default Size</a>
+                                        <a href='{{ object.preview.url }}'>Preview Size</a>
+                                        <a href='{{ object.thumb.url }}'>Thumbnail</a>
+                                        <a href='{{ object.tiny_thumb }}'>Tiny Thumbnail</a>
+                                    </div>
+                                    <div class="card-action">
+                                        <div class="row">
+                                            <div class="col s4">&emsp;</div>
+                                            <div class="col s4">Full</div>
+                                            <div class="col s4">Default</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">BBCode</div>
+                                            <div class="col s4">{% g_bb object.full_fixed object.title %}</div>
+                                            <div class="col s4">{% g_bb object.default object.title %}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">LinkedBB</div>
+                                            <div class="col s4">{% g_bb_linked object.full_fixed object.title %}</div>
+                                            <div class="col s4">{% g_bb_linked object.default object.title %}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">MarkDown</div>
+                                            <div class="col s4">{% g_markdown object.full_fixed object.title %}</div>
+                                            <div class="col s4">{% g_markdown object.default object.title %}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s4">HTML</div>
+                                            <div class="col s4">{% g_html object.full_fixed object.title %}</div>
+                                            <div class="col s4">{% g_html object.default object.title %}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-action">
-                                    <div class="row">
-                                        <div class="col s4">&emsp;</div>
-                                        <div class="col s4">Full</div>
-                                        <div class="col s4">Default</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s4">BBCode</div>
-                                        <div class="col s4">{% g_bb object.full_fixed object.title %}</div>
-                                        <div class="col s4">{% g_bb object.default object.title %}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s4">LinkedBB</div>
-                                        <div class="col s4">{% g_bb_linked object.full_fixed object.title %}</div>
-                                        <div class="col s4">{% g_bb_linked object.default object.title %}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s4">MarkDown</div>
-                                        <div class="col s4">{% g_markdown object.full_fixed object.title %}</div>
-                                        <div class="col s4">{% g_markdown object.default object.title %}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s4">HTML</div>
-                                        <div class="col s4">{% g_html object.full_fixed object.title %}</div>
-                                        <div class="col s4">{% g_html object.default object.title %}</div>
-                                    </div>
+                                <div id="t{{ object.pk }}settings" class="col s12">
+                                    <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
                                 </div>
+                                <div id="test4" class="col s12">Test 4</div>
+
                             </div>
                         </div>
                     </div>
@@ -152,4 +165,20 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/css/fluidbox.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".activator").click(function(){
+            var id = $(this).attr('tabpk');
+            var sel = $(this).attr('tabsel');
+
+            var tabsel = "#t" + id + "tabdad";
+            var tabtab = "#t" + id + sel + "q";
+            var tabrrr = "t" + id + sel;
+{#            console.log(tabsel);#}
+{#            console.log(tabtab);#}
+{#            console.log(tabrrr);#}
+            $(tabsel).tabs('select_tab', tabrrr);
+        });
+    });
+</script>
 {% endblock %}
