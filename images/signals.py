@@ -9,6 +9,9 @@ import time
 
 # this doesn't actually work because its dumb.
 # @receiver(post_save, sender=Image)
+from images.tasks import generate_thumbs
+
+
 def update_exif(sender, instance, created, **kwargs):
     if created:
         instance.query_exif()
@@ -21,3 +24,8 @@ def create_default_gallery(sender, instance, created, **kwargs):
             title = "Default",
             deletable=False,
         )
+
+@receiver(post_save, sender=Image)
+def generate_thumbs_via_celery(sender, instance, created, **kwargs):
+    if created:
+        generate_thumbs.delay(instance.pk)
