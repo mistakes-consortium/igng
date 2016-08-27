@@ -194,6 +194,12 @@ REST_FRAMEWORK = {
     )
 }
 
+# CELERY
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json', 'pickle']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
 try:
     path = os.path.join(BASE_DIR, "i_gng", "local_settings.py")
     f = open(path)

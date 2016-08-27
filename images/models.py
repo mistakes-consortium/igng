@@ -93,6 +93,8 @@ class Gallery(models.Model):
         elif self.display_density == Gallery.DisplaySize.LARGE:
             return 2
 
+DisplaySize = Gallery.DisplaySize
+
 def set_image_name_on_upload(instance, filename):
     file_ext = filename.rsplit('.', 1)[1]
     file_name = shortuuid.uuid()
