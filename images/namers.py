@@ -7,7 +7,7 @@ import shortuuid
 def generate_file_name(generator, sourcename):
     return "%s_%s" % (
         # shortuuid.uuid(),
-        sourcename.split('.')[0],
+        sourcename.split('.')[0][0:4],
         generator.options.get('prefix'),
     )
 
