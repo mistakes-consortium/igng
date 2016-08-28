@@ -4,11 +4,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.views.generic.base import RedirectView
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # Examples:
     # url(r'^$', 'i_gng.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^a/settings', 'images.views.user_settings', name="usersettings"),
+    # move these to common if we have more than 3
+    url(r'^a/settings$', 'common.views.user_settings', name="usersettings"),
+    url(r'^a/settings/ui', 'common.views.user_settings_ui', name="usersettings_ui"),
     (r'^a/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^i/', include("images.urls")),

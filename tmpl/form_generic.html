@@ -1,0 +1,37 @@
+{% extends "igng_base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">User UI Settings</h5>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block contentarea %}
+
+    <div class="container">
+        <div class="section">
+            <form action="" method="post">
+                {% crispy form form.helper %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select').material_select();
+        });
+
+    </script>
+{% endblock %}

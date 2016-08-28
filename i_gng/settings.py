@@ -80,6 +80,7 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.twitter',
 
     # our apps
+    'common',
     'images',
     'token_mgmt',
 )

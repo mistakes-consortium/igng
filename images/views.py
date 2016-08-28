@@ -1,11 +1,8 @@
-import base64
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http.response import HttpResponse
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
-
-# Create your views here.
 from django.template.context import RequestContext
+
 from images.forms import ImageUploadForm, GallerySettingsForm, GalleryCreateForm
 from images.models import Image, Gallery
 
@@ -166,12 +163,6 @@ def user_gallery_settings(request, obj_uuid):
     context = RequestContext(request, context)
 
     return render_to_response("gallery_settings.html", context)
-
-
-@login_required
-def user_settings(request):
-    context = RequestContext(request)
-    return render_to_response("settings.html", context)
 
 
 # potentially external views
