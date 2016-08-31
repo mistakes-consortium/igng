@@ -37,104 +37,114 @@
         </div>
         <div class="section">
             <div class="row">
-                {% for object in images %}
-                    {# Each "contact" is a Contact model object. #}
+                {% if gallery.display_density in gallery.display_card_class %}
+                    {% for object in images %}
+                        {# Each "contact" is a Contact model object. #}
 
-                    <div class="col {{ gallery.template_display_class }}">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                                <a class="boxme" href="{{ object.bigger.url }}">
-                                    <img src="{{ object.default.url }}" />
-                                </a>
-                                <span class="card-title">{{ object.title }}</span>
+                        <div class="col {{ gallery.template_display_class }}">
+                            <div class="card">
+                                <div class="card-image waves-effect waves-block waves-light">
+                                    <a class="boxme" href="{{ object.bigger.url }}">
+                                        <img src="{{ object.default.url }}" />
+                                    </a>
+                                    <span class="card-title">{{ object.title }}</span>
+                                </div>
+                                <div class="card-content">
+                                    <i class="mdi mdi-dots-vertical right activator" tabsel="info" tabpk="{{ object.pk }}"></i>
+                                    <i class="mdi mdi-message-image right activator" tabsel="settings" tabpk="{{ object.pk }}"></i>
+                                    {% if object.tags.exists %}
+                                        <p>
+                                            {% for t in object.tags.all %}
+                                                <a class="">{{ t }}</a>
+                                            {% endfor %}
+                                        </p>
+                                    {% else %}
+                                        <p class="grey-text lighten-1">No Tags</p>
+                                    {% endif %}
+                                </div>
+    {#                            <div class="card-action">#}
+
+    {#                            </div>#}
+                                <div class="card-reveal">
+                                    <ul id="t{{ object.pk }}tabdad" class="tabs" style="display: None;">
+                                        <li class="tab col s3"><a id="t{{ object.pk }}infoq" href="#t{{ object.pk }}info">Info</a></li>
+                                        <li class="tab col s3"><a id="t{{ object.pk }}settingsq" href="#t{{ object.pk }}settings">Test 2</a></li>
+                                        <li class="tab col s3"><a href="#test4">Test 4</a></li>
+                                    </ul>
+                                    <div id="t{{ object.pk }}info" class="col s12">
+                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
+                                        <div class="card-action">
+                                            <a href="{{ object.full_fixed.url }}">Full Size</a>
+                                            <a href='{{ object.bigger.url }}'>Bigger</a>
+                                            <a href='{{ object.default.url }}'>Default Size</a>
+                                            <a href='{{ object.preview.url }}'>Preview Size</a>
+                                            <a href='{{ object.thumb.url }}'>Thumbnail</a>
+                                            <a href='{{ object.tiny_thumb }}'>Tiny Thumbnail</a>
+                                        </div>
+                                        <div class="card-action">
+                                            <div class="row">
+                                                <div class="col s4">&emsp;</div>
+                                                <div class="col s4">Full</div>
+                                                <div class="col s4">Default</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s4">BBCode</div>
+                                                <div class="col s4">{% g_bb object.full_fixed object.title %}</div>
+                                                <div class="col s4">{% g_bb object.default object.title %}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s4">LinkedBB</div>
+                                                <div class="col s4">{% g_bb_linked object.full_fixed object.title %}</div>
+                                                <div class="col s4">{% g_bb_linked object.default object.title %}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s4">MarkDown</div>
+                                                <div class="col s4">{% g_markdown object.full_fixed object.title %}</div>
+                                                <div class="col s4">{% g_markdown object.default object.title %}</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s4">HTML</div>
+                                                <div class="col s4">{% g_html object.full_fixed object.title %}</div>
+                                                <div class="col s4">{% g_html object.default object.title %}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="t{{ object.pk }}settings" class="col s12">
+                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
+                                    </div>
+                                    <div id="test4" class="col s12">Test 4</div>
+
+                                </div>
                             </div>
-                            <div class="card-content">
-                                <i class="mdi mdi-dots-vertical right activator" tabsel="info" tabpk="{{ object.pk }}"></i>
-                                <i class="mdi mdi-message-image right activator" tabsel="settings" tabpk="{{ object.pk }}"></i>
-                                {% if object.tags.exists %}
-                                    <p>
-                                        {% for t in object.tags.all %}
-                                            <a class="">{{ t }}</a>
-                                        {% endfor %}
-                                    </p>
+                        </div>
+                        {% if forloop.counter|divisibleby:gallery.template_divisibility %}
+                            <div class="row">
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <div class="row center">
+                            <div class="right">
+                                {% if is_users_gallery %}
+                                    <a href="{% url "user_gallery_upload" gallery.uuid %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
+                                {% elif is_default_gallery %}
+                                    <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
                                 {% else %}
-                                    <p class="grey-text lighten-1">No Tags</p>
+                                    {# nothing here then #}
                                 {% endif %}
                             </div>
-{#                            <div class="card-action">#}
+                            <h1 class="header center orange-text">No Images</h1>
 
-{#                            </div>#}
-                            <div class="card-reveal">
-                                <ul id="t{{ object.pk }}tabdad" class="tabs" style="display: None;">
-                                    <li class="tab col s3"><a id="t{{ object.pk }}infoq" href="#t{{ object.pk }}info">Info</a></li>
-                                    <li class="tab col s3"><a id="t{{ object.pk }}settingsq" href="#t{{ object.pk }}settings">Test 2</a></li>
-                                    <li class="tab col s3"><a href="#test4">Test 4</a></li>
-                                </ul>
-                                <div id="t{{ object.pk }}info" class="col s12">
-                                    <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
-                                    <div class="card-action">
-                                        <a href="{{ object.full_fixed.url }}">Full Size</a>
-                                        <a href='{{ object.bigger.url }}'>Bigger</a>
-                                        <a href='{{ object.default.url }}'>Default Size</a>
-                                        <a href='{{ object.preview.url }}'>Preview Size</a>
-                                        <a href='{{ object.thumb.url }}'>Thumbnail</a>
-                                        <a href='{{ object.tiny_thumb }}'>Tiny Thumbnail</a>
-                                    </div>
-                                    <div class="card-action">
-                                        <div class="row">
-                                            <div class="col s4">&emsp;</div>
-                                            <div class="col s4">Full</div>
-                                            <div class="col s4">Default</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s4">BBCode</div>
-                                            <div class="col s4">{% g_bb object.full_fixed object.title %}</div>
-                                            <div class="col s4">{% g_bb object.default object.title %}</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s4">LinkedBB</div>
-                                            <div class="col s4">{% g_bb_linked object.full_fixed object.title %}</div>
-                                            <div class="col s4">{% g_bb_linked object.default object.title %}</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s4">MarkDown</div>
-                                            <div class="col s4">{% g_markdown object.full_fixed object.title %}</div>
-                                            <div class="col s4">{% g_markdown object.default object.title %}</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s4">HTML</div>
-                                            <div class="col s4">{% g_html object.full_fixed object.title %}</div>
-                                            <div class="col s4">{% g_html object.default object.title %}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="t{{ object.pk }}settings" class="col s12">
-                                    <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
-                                </div>
-                                <div id="test4" class="col s12">Test 4</div>
-
-                            </div>
                         </div>
-                    </div>
-                    {% if forloop.counter|divisibleby:gallery.template_divisibility %}
-                        <div class="row">
-                        </div>
-                    {% endif %}
-                {% empty %}
-                    <div class="row center">
-                        <div class="right">
-                            {% if is_users_gallery %}
-                                <a href="{% url "user_gallery_upload" gallery.uuid %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
-                            {% elif is_default_gallery %}
-                                <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
-                            {% else %}
-                                {# nothing here then #}
-                            {% endif %}
-                        </div>
-                        <h1 class="header center orange-text">No Images</h1>
-
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% elif gallery.display_density in gallery.display_lapse_class %}
+                    >>> video / autogif of the last xyz <<< <br/>
+                    remove pagination? <br />
+                    {% for object in images %}
+                        <img src="{{ object.thumb.url }}" width="{{ gallery.template_display_class }}"/>
+                    {% endfor %}
+                {% else %}
+                {{ gallery.display_density }} / / / {{ gallery.display_card_class }}
+                {% endif %}
             </div>
             <div class="row">
                 <ul class="pagination">

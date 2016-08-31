@@ -93,8 +93,14 @@ def user_create_gallery(request):
 def user_get_gallery_images(request, obj_uuid):
     gallery = get_object_or_404(Gallery, uuid=obj_uuid)
     images = gallery.images.all()
+    if gallery.display_density in gallery.display_card_class:
+        paginator = Paginator(images, 12)
+    elif gallery.display_density in gallery.display_lapse_class:
+        if gallery.display_density == gallery.DisplaySize.LAPSE_SM:
+            paginator = Paginator(images, 29 * 8) # 8 rows
+        if gallery.display_density == gallery.DisplaySize.LAPSE_LG:
+            paginator = Paginator(images, 20 * 4)  # 4 rows
 
-    paginator = Paginator(images, 12)
     page = request.GET.get('page')
     try:
         imgs = paginator.page(page)

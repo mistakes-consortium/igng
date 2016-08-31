@@ -41,17 +41,28 @@ class Gallery(models.Model):
     deletable = models.BooleanField(default=True)
 
     # let the user pick how many cards to show in a gallery.
+    @property
+    def display_card_class(self):
+        return [self.DisplaySize.TINY, self.DisplaySize.SMALL, self.DisplaySize.MEDIUM, self.DisplaySize.LARGE]
+    @property
+    def display_lapse_class(self):
+        return [self.DisplaySize.LAPSE_SM, self.DisplaySize.LAPSE_LG]
+
     class DisplaySize(Enum):
         TINY = 0
         SMALL = 1
         MEDIUM = 2
         LARGE = 3
+        LAPSE_SM = 4
+        LAPSE_LG = 5
 
         class Labels:
             TINY = "Twelve Images Per Row"
             SMALL = "Six Images Per Row"
             MEDIUM = "Three Images Per Row"
             LARGE = "Two Images Per Row"
+            LAPSE_SM = "Ultra Compact Lapse Layout"
+            LAPSE_LG = "Less Compact Lapse Layout"
 
     display_density = EnumIntegerField(DisplaySize, default=2)
 
@@ -81,6 +92,11 @@ class Gallery(models.Model):
             return "s4 m4"
         elif self.display_density == Gallery.DisplaySize.LARGE:
             return "s6 m6"
+
+        elif self.display_density == Gallery.DisplaySize.LAPSE_LG:
+            return "60px"
+        elif self.display_density == Gallery.DisplaySize.LAPSE_SM:
+            return "40px"
 
     @property
     def template_divisibility(self):
