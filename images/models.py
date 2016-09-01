@@ -93,7 +93,7 @@ class Gallery(models.Model):
         elif self.display_density == Gallery.DisplaySize.LARGE:
             return 16
         elif self.display_density == Gallery.DisplaySize.LAPSE_LG:
-            return 25 * 4
+            return 25 * 8
         elif self.display_density == Gallery.DisplaySize.LAPSE_SM:
             return 29 * 15
 
