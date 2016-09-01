@@ -95,7 +95,7 @@ class Gallery(models.Model):
         elif self.display_density == Gallery.DisplaySize.LAPSE_LG:
             return 25 * 4
         elif self.display_density == Gallery.DisplaySize.LAPSE_SM:
-            return 40 * 8
+            return 29 * 15
 
     @property
     def template_display_class(self):
