@@ -1,3 +1,7 @@
 fieldset {
     border: none;
 }
+
+a.titlelinks {
+    color: #000000;
+}

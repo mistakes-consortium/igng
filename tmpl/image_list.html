@@ -16,6 +16,14 @@
                     {% else %}
                         Your Images
                     {% endif %}
+                    {% if is_users_gallery %}
+                        <a class="titlelinks" href="{% url "user_gallery_settings" gallery.uuid %}?ret=1" title="Settings">
+                            <i class="mdi mdi-settings"></i>
+                        </a>
+                        <a class="titlelinks" href="{% url "gallery_permalink" gallery.uuid %}" title="Link">
+                            <i class="mdi mdi-link"></i>
+                        </a>
+                    {% endif %}
                 </h5>
             </div>
         </div>
@@ -138,7 +146,8 @@
                     {% endfor %}
                 {% elif gallery.display_density in gallery.display_lapse_class %}
                     >>> video / autogif of the last xyz <<< <br/>
-                    remove pagination? <br />
+                    - remove pagination? <br />
+                    - more images per page? <br />
                     {% for object in images %}
                         <img src="{{ object.thumb.url }}" width="{{ gallery.template_display_class }}"/>
                     {% endfor %}

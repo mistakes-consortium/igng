@@ -83,6 +83,21 @@ class Gallery(models.Model):
         return self.images.order_by("?")[0]
 
     @property
+    def gallery_pagination_count(self):
+        if self.display_density == Gallery.DisplaySize.TINY:
+            return 36
+        elif self.display_density == Gallery.DisplaySize.SMALL:
+            return 24
+        elif self.display_density == Gallery.DisplaySize.MEDIUM:
+            return 12
+        elif self.display_density == Gallery.DisplaySize.LARGE:
+            return 16
+        elif self.display_density == Gallery.DisplaySize.LAPSE_LG:
+            return 25 * 4
+        elif self.display_density == Gallery.DisplaySize.LAPSE_SM:
+            return 40 * 8
+
+    @property
     def template_display_class(self):
         if self.display_density == Gallery.DisplaySize.TINY:
             return "s1 m1"
