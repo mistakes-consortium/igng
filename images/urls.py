@@ -12,7 +12,12 @@ urlpatterns = patterns('images.views',
     url(r'^$', views.index),
     url(r'^u/$', views.upload, name="upload_img"),
     url(r'^u/s/(?P<obj_uuid>[\w-]+)', views.upload_success, name="upload_success"),
+
+    url(r'tt$', views.gallery_tooltip_info_view, name="tooltip_root_view"),
+    url(r'tt/(?P<obj_uuid>[\w-]+)$', views.gallery_tooltip_info_view, name="tooltip_detail_view"),
+
     url(r'^i/$', views.user_default_gallery_images, name="user_images"),
+
     url(r'^g/$', views.user_galleries, name="user_galleries"),
     url(r'^g/mk/$', views.user_create_gallery, name="user_gallery_create"),
     url(r'^g/(?P<obj_uuid>[\w-]+)$', views.user_get_gallery_images, name="user_gallery_images"),

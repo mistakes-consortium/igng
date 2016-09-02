@@ -17,7 +17,8 @@
                         Your Images
                     {% endif %}
                     {% if is_users_gallery %}
-                        <a class="titlelinks" href="{% url "user_gallery_settings" gallery.uuid %}?ret=1" title="Settings">
+                        <a class="titlelinks" href="{% url "user_gallery_settings" gallery.uuid %}?ret=1"
+                           title="Settings">
                             <i class="mdi mdi-settings"></i>
                         </a>
                         <a class="titlelinks" href="{% url "gallery_permalink" gallery.uuid %}" title="Link">
@@ -53,13 +54,15 @@
                             <div class="card">
                                 <div class="card-image waves-effect waves-block waves-light">
                                     <a class="boxme" href="{{ object.bigger.url }}">
-                                        <img src="{{ object.default.url }}" />
+                                        <img src="{{ object.default.url }}"/>
                                     </a>
                                     <span class="card-title">{{ object.title }}</span>
                                 </div>
                                 <div class="card-content">
-                                    <i class="mdi mdi-dots-vertical right activator" tabsel="info" tabpk="{{ object.pk }}"></i>
-                                    <i class="mdi mdi-message-image right activator" tabsel="settings" tabpk="{{ object.pk }}"></i>
+                                    <i class="mdi mdi-dots-vertical right activator" tabsel="info"
+                                       tabpk="{{ object.pk }}"></i>
+                                    <i class="mdi mdi-message-image right activator" tabsel="settings"
+                                       tabpk="{{ object.pk }}"></i>
                                     {% if object.tags.exists %}
                                         <p>
                                             {% for t in object.tags.all %}
@@ -70,17 +73,20 @@
                                         <p class="grey-text lighten-1">No Tags</p>
                                     {% endif %}
                                 </div>
-    {#                            <div class="card-action">#}
+                                {#                            <div class="card-action">#}
 
-    {#                            </div>#}
+                                {#                            </div>#}
                                 <div class="card-reveal">
                                     <ul id="t{{ object.pk }}tabdad" class="tabs" style="display: None;">
-                                        <li class="tab col s3"><a id="t{{ object.pk }}infoq" href="#t{{ object.pk }}info">Info</a></li>
-                                        <li class="tab col s3"><a id="t{{ object.pk }}settingsq" href="#t{{ object.pk }}settings">Test 2</a></li>
+                                        <li class="tab col s3"><a id="t{{ object.pk }}infoq"
+                                                                  href="#t{{ object.pk }}info">Info</a></li>
+                                        <li class="tab col s3"><a id="t{{ object.pk }}settingsq"
+                                                                  href="#t{{ object.pk }}settings">Test 2</a></li>
                                         <li class="tab col s3"><a href="#test4">Test 4</a></li>
                                     </ul>
                                     <div id="t{{ object.pk }}info" class="col s12">
-                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
+                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i
+                                                class="mdi mdi-close right"></i></span>
                                         <div class="card-action">
                                             <a href="{{ object.full_fixed.url }}">Full Size</a>
                                             <a href='{{ object.bigger.url }}'>Bigger</a>
@@ -118,7 +124,8 @@
                                         </div>
                                     </div>
                                     <div id="t{{ object.pk }}settings" class="col s12">
-                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i class="mdi mdi-close right"></i></span>
+                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i
+                                                class="mdi mdi-close right"></i></span>
                                     </div>
                                     <div id="test4" class="col s12">Test 4</div>
 
@@ -133,9 +140,13 @@
                         <div class="row center">
                             <div class="right">
                                 {% if is_users_gallery %}
-                                    <a href="{% url "user_gallery_upload" gallery.uuid %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
+                                    <a href="{% url "user_gallery_upload" gallery.uuid %}"
+                                       class="btn-floating btn-large waves-effect waves-light red"><i
+                                            class="mdi mdi-plus"></i></a>
                                 {% elif is_default_gallery %}
-                                    <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
+                                    <a href="{% url "upload_img" %}"
+                                       class="btn-floating btn-large waves-effect waves-light red"><i
+                                            class="mdi mdi-plus"></i></a>
                                 {% else %}
                                     {# nothing here then #}
                                 {% endif %}
@@ -146,30 +157,33 @@
                     {% endfor %}
                 {% elif gallery.display_density in gallery.display_lapse_class %}
                     >>> video / autogif of the last xyz <<< <br/>
-                    - remove pagination? <br />
-                    - more images per page? <br />
+                    - remove pagination? <br/>
+                    - more images per page? <br/>
                     {% for object in images %}
-                        <img src="{{ object.thumb.url }}" width="{{ gallery.template_display_class }}"/>
+                        <img src="{{ object.thumb.url }}" width="{{ gallery.template_display_class }}"
+                             id="{{ object.uuid }}" class="tooltip"/>
                     {% endfor %}
                 {% else %}
-                {{ gallery.display_density }} / / / {{ gallery.display_card_class }}
+                    {{ gallery.display_density }} / / / {{ gallery.display_card_class }}
                 {% endif %}
             </div>
             <div class="row">
                 <ul class="pagination">
                     {% if images.has_previous %}
-                       <li><a href="?page={{ images.previous_page_number }}"><i class="mdi mdi-chevron-left"></i></a></li>
+                        <li><a href="?page={{ images.previous_page_number }}"><i class="mdi mdi-chevron-left"></i></a>
+                        </li>
                     {% else %}
                         <li class="disabled"><a href="#"><i class="mdi mdi-chevron-left"></i></a></li>
                     {% endif %}
 
                     {% for p in images.paginator.page_range %}
-                        <li class="orange darken-3 waves-effect{% if p == images.number %} active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
+                        <li class="orange darken-3 waves-effect{% if p == images.number %} active{% endif %}"><a
+                                href="?page={{ p }}">{{ p }}</a></li>
                     {% endfor %}
 
 
                     {% if images.has_next %}
-                       <li><a href="?page={{ images.next_page_number }}"><i class="mdi mdi-chevron-right"></i></a></li>
+                        <li><a href="?page={{ images.next_page_number }}"><i class="mdi mdi-chevron-right"></i></a></li>
                     {% else %}
                         <li class="disabled"><a href="#"><i class="mdi mdi-chevron-right"></i></a></li>
                     {% endif %}
@@ -181,23 +195,50 @@
 
 
 {% block scripts %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/css/fluidbox.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".activator").click(function(){
-            var id = $(this).attr('tabpk');
-            var sel = $(this).attr('tabsel');
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.tooltipster/4.1.4/css/tooltipster.bundle.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.tooltipster/4.1.4/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/css/fluidbox.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.tooltipster/4.1.4/js/tooltipster.bundle.min.js"></script>
 
-            var tabsel = "#t" + id + "tabdad";
-            var tabtab = "#t" + id + sel + "q";
-            var tabrrr = "t" + id + sel;
-{#            console.log(tabsel);#}
-{#            console.log(tabtab);#}
-{#            console.log(tabrrr);#}
-            $(tabsel).tabs('select_tab', tabrrr);
+    <script>
+        $(document).ready(function () {
+            $(".activator").click(function () {
+                var id = $(this).attr('tabpk');
+                var sel = $(this).attr('tabsel');
+
+                var tabsel = "#t" + id + "tabdad";
+                var tabtab = "#t" + id + sel + "q";
+                var tabrrr = "t" + id + sel;
+                {#            console.log(tabsel);#}
+                {#            console.log(tabtab);#}
+                {#            console.log(tabrrr);#}
+                $(tabsel).tabs('select_tab', tabrrr);
+            });
+            $('.tooltip').tooltipster({
+                content: 'Loading...',
+                contentAsHTML: true,
+                theme: 'tooltipster-shadow',
+                functionBefore: function (instance, helper) {
+                    console.log(instance);
+                    var $origin = $(helper.origin);
+                    var inst_uuid = $origin[0].id;
+
+                    // we set a variable so the data is only loaded once via Ajax, not every time the tooltip opens
+                    if ($origin.data('loaded') !== true) {
+
+                        $.get('{% url "tooltip_root_view" %}/' + inst_uuid, function (data) {
+
+                            // call the 'content' method to update the content of our tooltip with the returned data
+                            instance.content(data);
+
+                            // to remember that the data has been loaded
+                            $origin.data('loaded', true);
+                        });
+                    }
+                }
+            });
         });
-    });
-</script>
+    </script>
 {% endblock %}

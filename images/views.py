@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
@@ -168,6 +169,16 @@ def user_gallery_settings(request, obj_uuid):
 
     return render_to_response("gallery_settings.html", context)
 
+def gallery_tooltip_info_view(request, obj_uuid=None):
+    images = Image.objects.filter(
+        Q(gallery__private=False) | Q(gallery__user=request.user)
+    )
+    image = get_object_or_404(images, uuid=obj_uuid)
+
+    context = {}
+    context['image'] = image
+    context = RequestContext(request, context)
+    return render(request, "tooltip_lapse.html", context)
 
 # potentially external views
 def linked_gallery_view(request, obj_uuid):
