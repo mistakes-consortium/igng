@@ -11,3 +11,8 @@ def generate_thumbs(image_id):
     i.preview.generate()
     i.thumb.generate()
     i.tiny_thumb.generate()
+
+@shared_task
+def retrieve_exif(image_id):
+    i = Image.objects.get(pk=image_id)
+    i.query_exif()

@@ -51,7 +51,7 @@ def upload_success(request, obj_uuid):
 @login_required
 def user_default_gallery_images(request):
     gallery = request.user.galleries.default(request.user)
-    images = gallery.images.all().prefetch_related('tags')
+    images = gallery.images.all().prefetch_related('tags').order_by(*gallery.display_sort_string)
 
     paginator = Paginator(images, 12)
     page = request.GET.get('page')
@@ -93,7 +93,7 @@ def user_create_gallery(request):
 @login_required
 def user_get_gallery_images(request, obj_uuid):
     gallery = get_object_or_404(Gallery, uuid=obj_uuid)
-    images = gallery.images.all()
+    images = gallery.images.all().order_by(*gallery.display_sort_string)
 
     paginator = Paginator(images, gallery.gallery_pagination_count)
 
@@ -169,6 +169,7 @@ def user_gallery_settings(request, obj_uuid):
 
     return render_to_response("gallery_settings.html", context)
 
+# look into CBVs here
 def gallery_tooltip_info_view(request, obj_uuid=None):
     images = Image.objects.filter(
         Q(gallery__private=False) | Q(gallery__user=request.user)
@@ -178,7 +179,18 @@ def gallery_tooltip_info_view(request, obj_uuid=None):
     context = {}
     context['image'] = image
     context = RequestContext(request, context)
-    return render(request, "tooltip_lapse.html", context)
+    return render(request, "ajax_lapse.html", context)
+
+def gallery_exif_info_view(request, obj_uuid=None):
+    images = Image.objects.filter(
+        Q(gallery__private=False) | Q(gallery__user=request.user)
+    )
+    image = get_object_or_404(images, uuid=obj_uuid)
+
+    context = {}
+    context['exif'] = image.exif_data.values_list('key__key','value__value')
+    context = RequestContext(request, context)
+    return render(request, "ajax_exif.html", context)
 
 # potentially external views
 def linked_gallery_view(request, obj_uuid):
@@ -186,7 +198,7 @@ def linked_gallery_view(request, obj_uuid):
     View For Permalinks
     """
     gallery = get_object_or_404(Gallery, uuid=obj_uuid)
-    images = gallery.images.all()
+    images = gallery.images.all().order_by(*gallery.display_sort_string)
 
     paginator = Paginator(images, gallery.gallery_pagination_count)
     page = request.GET.get('page')

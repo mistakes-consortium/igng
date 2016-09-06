@@ -1,0 +1,23 @@
+<table>
+    <thead>
+    <tr>
+        <th data-field="id">Key</th>
+        <th data-field="name">Value</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for k in exif %}
+    <tr>
+        {% for i in k %}
+            <td>{{ i }}</td>
+        {% endfor %}
+    </tr>
+
+    {% empty %}
+    <tr>
+        <td>No EXIF Data</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

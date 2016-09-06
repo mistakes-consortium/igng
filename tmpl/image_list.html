@@ -59,10 +59,10 @@
                                     <span class="card-title">{{ object.title }}</span>
                                 </div>
                                 <div class="card-content">
-                                    <i class="mdi mdi-dots-vertical right activator" tabsel="info"
+                                    <i class="small mdi mdi-dots-vertical right activator clickinfo" tabsel="info"
                                        tabpk="{{ object.pk }}"></i>
-                                    <i class="mdi mdi-message-image right activator" tabsel="settings"
-                                       tabpk="{{ object.pk }}"></i>
+                                    <i class="small mdi mdi-message-image right activator clickexif" tabsel="exif"
+                                       tabpk="{{ object.pk }}" tabuuid="{{ object.uuid }}"></i>
                                     {% if object.tags.exists %}
                                         <p>
                                             {% for t in object.tags.all %}
@@ -79,14 +79,18 @@
                                 <div class="card-reveal">
                                     <ul id="t{{ object.pk }}tabdad" class="tabs" style="display: None;">
                                         <li class="tab col s3"><a id="t{{ object.pk }}infoq"
-                                                                  href="#t{{ object.pk }}info">Info</a></li>
-                                        <li class="tab col s3"><a id="t{{ object.pk }}settingsq"
-                                                                  href="#t{{ object.pk }}settings">Test 2</a></li>
+                                                                  href="#t{{ object.pk }}info">Links</a></li>
+                                        <li class="tab col s3"><a id="t{{ object.pk }}exifq"
+                                                                  href="#t{{ object.pk }}exif">Exif</a></li>
                                         <li class="tab col s3"><a href="#test4">Test 4</a></li>
                                     </ul>
                                     <div id="t{{ object.pk }}info" class="col s12">
-                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i
-                                                class="mdi mdi-close right"></i></span>
+                                        {% if user.profile.ui_darkness.value == 1 %}
+                                            <span class="card-title white-text text-darken-4">
+                                        {% else %}
+                                            <span class="card-title grey-text text-darken-4">
+                                        {% endif %}
+                                        LINKS <i class="mdi mdi-close right"></i></span>
                                         <div class="card-action">
                                             <a href="{{ object.full_fixed.url }}">Full Size</a>
                                             <a href='{{ object.bigger.url }}'>Bigger</a>
@@ -123,11 +127,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="t{{ object.pk }}settings" class="col s12">
-                                        <span class="card-title grey-text text-darken-4">{{ object.title }} <i
-                                                class="mdi mdi-close right"></i></span>
+                                    <div id="t{{ object.pk }}exif" class="col s12">
+                                        {% if user.profile.ui_darkness.value == 1 %}
+                                            <span class="card-title white-text text-darken-4">
+                                        {% else %}
+                                            <span class="card-title grey-text text-darken-4">
+                                        {% endif %}
+                                        EXIF <i class="mdi mdi-close right"></i></span>
                                     </div>
-                                    <div id="test4" class="col s12">Test 4</div>
+                                    <div id="texif{{ object.pk }}" class="col s12">Test 4</div>
 
                                 </div>
                             </div>
@@ -204,6 +212,16 @@
 
     <script>
         $(document).ready(function () {
+            $(".clickexif").click(function () {
+                var id = $(this).attr('tabpk')
+                var uuid = $(this).attr('tabuuid');
+                var datasel = "#texif" + id;
+                $.get('{% url 'ajax_exif_root_view' %}/' + uuid, function(data){
+                        console.log(data);
+                        console.log(datasel);
+                        $(datasel).html(data);
+                    });
+                });
             $(".activator").click(function () {
                 var id = $(this).attr('tabpk');
                 var sel = $(this).attr('tabsel');
@@ -221,14 +239,13 @@
                 contentAsHTML: true,
                 theme: 'tooltipster-shadow',
                 functionBefore: function (instance, helper) {
-                    console.log(instance);
                     var $origin = $(helper.origin);
                     var inst_uuid = $origin[0].id;
 
                     // we set a variable so the data is only loaded once via Ajax, not every time the tooltip opens
                     if ($origin.data('loaded') !== true) {
 
-                        $.get('{% url "tooltip_root_view" %}/' + inst_uuid, function (data) {
+                        $.get('{% url 'ajax_tooltip_root_view' %}/' + inst_uuid, function (data) {
 
                             // call the 'content' method to update the content of our tooltip with the returned data
                             instance.content(data);

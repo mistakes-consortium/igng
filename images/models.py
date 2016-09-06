@@ -48,6 +48,16 @@ class Gallery(models.Model):
     def display_lapse_class(self):
         return [self.DisplaySize.LAPSE_SM, self.DisplaySize.LAPSE_LG]
 
+    class DisplaySort(Enum):
+        UPLOADED_ASC = 0
+        UPLOADED_DSC = 1
+        # EXIF_ASC = 2
+        # EXIF_DSC = 3
+
+        class Labels:
+            UPLOADED_ASC = "Oldest First"
+            UPLOADED_DSC = "Newest First"
+
     class DisplaySize(Enum):
         TINY = 0
         SMALL = 1
@@ -65,6 +75,7 @@ class Gallery(models.Model):
             LAPSE_LG = "Less Compact Lapse Layout"
 
     display_density = EnumIntegerField(DisplaySize, default=2)
+    display_sort = EnumIntegerField(DisplaySort, default=0)
 
     def __unicode__(self):
         return self.title
@@ -124,7 +135,16 @@ class Gallery(models.Model):
         elif self.display_density == Gallery.DisplaySize.LARGE:
             return 2
 
+    @property
+    def display_sort_string(self):
+        if self.display_sort == Gallery.DisplaySort.UPLOADED_ASC:
+            return ["uploaded"]
+        elif self.display_sort == Gallery.DisplaySort.UPLOADED_DSC:
+            return ["-uploaded"]
+
+#
 DisplaySize = Gallery.DisplaySize
+DisplaySort = Gallery.DisplaySort
 
 def set_image_name_on_upload(instance, filename):
     file_ext = filename.rsplit('.', 1)[1]
