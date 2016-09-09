@@ -3,14 +3,20 @@ from images.models import Image
 
 
 @shared_task
-def generate_thumbs(image_id):
+def generate_thumbs(image_id,f=True, b=True, d=True, p=True,t=True,tt=True):
     i = Image.objects.get(pk=image_id)
-    i.full_fixed.generate()
-    i.bigger.generate()
-    i.default.generate()
-    i.preview.generate()
-    i.thumb.generate()
-    i.tiny_thumb.generate()
+    if f:
+        i.full_fixed.generate()
+    if b:
+        i.bigger.generate()
+    if d:
+        i.default.generate()
+    if p:
+        i.preview.generate()
+    if t:
+        i.thumb.generate()
+    if tt:
+        i.tiny_thumb.generate()
 
 @shared_task
 def retrieve_exif(image_id):
