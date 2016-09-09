@@ -9,7 +9,7 @@ from imagekit.cachefiles import ImageCacheFile
 from imagekit.models.fields import ProcessedImageField
 from imagekit.models.fields import ImageSpecField
 from pilkit.processors.base import Transpose
-from pilkit.processors.resize import ResizeToFill, SmartResize, Resize
+from pilkit.processors.resize import ResizeToFill, SmartResize, Resize, ResizeToCover
 from PIL import Image as IMG  # prevents clobbering of my namespace
 from PIL.ExifTags import TAGS
 import shortuuid
@@ -176,13 +176,13 @@ class Image(models.Model):
     )
     bigger = ImageSpecField(
         source="full_fixed",
-        processors=[SmartResize(1440, 1080)],
+        processors=[ResizeToCover(1440, 1080, upscale=False)],
         format="JPEG",
         options={'quality': 80, 'prefix':"b"}
     )
     default = ImageSpecField(
         source="full_fixed",
-        processors=[SmartResize(720, 540)],
+        processors=[ResizeToCover(720, 540, upscale=False)],
         format="JPEG",
         options={'quality': 80, 'prefix':"d"}
     )
