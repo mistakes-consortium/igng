@@ -65,7 +65,7 @@
                     {#          </a></li>#}
                     <li id="uploadshow" style="display:None;"><a class="dropdown-button" href="#!" data-activates="dropdown_upload" data-constrainwidth="false" data-beloworigin="true"><i class="mdi mdi-upload right"></i></a></li>
                 {% else %}
-                    <li><a href="{% url "account_login" %}"><i class="mdi-action-account-circle"></i></a></li>
+                    <li><a href="{% url "account_login" %}"><i class="mdi mdi-account-circle"></i></a></li>
                 {% endif %}
             </ul>
 
@@ -192,6 +192,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.2/js.cookie.min.js"></script>
 <script src="{% static "js/materialize.js" %}"></script>
 <script src="{% static "js/img_upload.js" %}"></script>
+<script src="{% static "js/dropzone.js" %}"></script>
 {% block scripts %}
 {% endblock %}
 {#  <script src="js/init.js"></script>#}
@@ -205,7 +206,6 @@
         };
         function upload_storage(result){
             $("#uploadshow").show();
-{#            console.table(result);#}
             var str = '<li><a href="'+result.image_page+'"><img src="' + result.tiny_thumb_url + '" alt="Uploaded"></a></li>'
             $("#dropdown_upload").append(str)
         };
@@ -232,10 +232,33 @@
                     upload_storage(data);
                 }
             });
-{#            console.table(results);#}
             return filename = results.filename, dataURL = results.dataURL, results;
         });
-
+        $("html").dropzone({
+            url: "{% url "api:images_all_upload-list" %}",
+            autoProcessQueue: true,
+            init: function() {
+                this.on("success", function (file, responseText) {
+                    // Handle the responseText here. For example, add the text to the preview element:
+                    // set the image_page url from the uploader as the link here
+                    $(".dz-image-preview:last-child a").attr("href", responseText.image_page);
+                });
+            },
+            sending: function(file, xhr, formData){
+                {% if gallery %}
+                formData.append("gallery", "{{ gallery.uuid }}");
+                {% endif %}
+                $("#uploadshow").show();
+            },
+            previewTemplate: '<li><a href=""><img data-dz-thumbnail alt="Uploaded"></a></li>',
+            previewsContainer: "#dropdown_upload",
+            thumbnailWidth: 80,
+            thumbnailHeight: 60,
+            paramName: 'original',
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        });
     });
 </script>
 </body>

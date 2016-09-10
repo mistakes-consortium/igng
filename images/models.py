@@ -225,15 +225,18 @@ class Image(models.Model):
         if do:
             exif_raw = image._getexif()
             # I guess this deals with the compactness, so it needs to be decoded?
-            exif_decoded = {TAGS.get(k): v for k, v in exif_raw.iteritems()}
+            if exif_raw:
+                exif_decoded = {TAGS.get(k): v for k, v in exif_raw.iteritems()}
 
-            out = []
-            for key, value in exif_decoded.iteritems():
-                ek, ck = ExifKey.objects.get_or_create(key=key)
-                ev, cv = ExifValue.objects.get_or_create(value=value)
+                out = []
+                for key, value in exif_decoded.iteritems():
+                    ek, ck = ExifKey.objects.get_or_create(key=key)
+                    ev, cv = ExifValue.objects.get_or_create(value=value)
 
-                ee, ce = EXIFEntry.objects.get_or_create(key=ek, value=ev)
-                self.exif_data.add(ee)
+                    ee, ce = EXIFEntry.objects.get_or_create(key=ek, value=ev)
+                    self.exif_data.add(ee)
+            else:
+                pass # no exif
 
     def cached_full_fixed(self):
         generator = ImageCacheFile(self.full_fixed)
