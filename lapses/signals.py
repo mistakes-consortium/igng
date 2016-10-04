@@ -9,4 +9,4 @@ from lapses.tasks import autolapse
 @receiver(post_save, sender=Image)
 def do_the_lapse_hook(sender, instance, created, **kwargs):
     if created and instance.gallery.autolapse_configs.exists():
-        autolapse.delay(instance.gallery.id)
+        autolapse.apply_async(args=[instance.gallery.id],countdown=15)

@@ -54,4 +54,7 @@ def autolapse(gallery_id, force=False):
 
             alfile.save()
 
+        lapse_instance.status = LapseInstanceStatus.COMPLETED
+        lapse_instance.save()
+
 
