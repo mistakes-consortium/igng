@@ -142,6 +142,22 @@ class Gallery(models.Model):
         elif self.display_sort == Gallery.DisplaySort.UPLOADED_DSC:
             return ["-uploaded"]
 
+    @property
+    def latest_lapses_exist(self):
+        configs = self.autolapse_configs.all()
+        return any([c.autolapse_instances.exists() for c in configs])
+    @property
+    def latest_lapse_instances_for_preview(self):
+        print "xyz"
+        configs = self.autolapse_configs.all()
+        inst = {}
+        for c in configs:
+            if c.autolapse_instances.exists():
+                inst[c.uuid] = c.autolapse_instances.filter().latest()
+            else:
+                inst[c.uuid] = ""
+        return inst
+
 #
 DisplaySize = Gallery.DisplaySize
 DisplaySort = Gallery.DisplaySort
@@ -204,6 +220,9 @@ class Image(models.Model):
         format="JPEG",
         options={'quality': 40,  'prefix':"tt"},
     )
+
+    AVAIL_SIZES = ["full_fixed", "bigger", "default", "preview", "thumb", "tiny_thumb"]
+    AVAIL_INTS = [0,1,2,3,4,5]
 
     exif_data = models.ManyToManyField("EXIFEntry", blank=True)
 
@@ -288,6 +307,9 @@ class EXIFEntry(models.Model):
 
     def __unicode__(self):
         return "<ExifEntry(%s:%s)>" % (self.key, self.value)
+
+
+
 
 
 ### from images.signals import update_exif

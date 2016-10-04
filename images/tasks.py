@@ -1,5 +1,5 @@
 from celery import shared_task
-from images.models import Image
+from images.models import Image, Gallery
 import os
 
 @shared_task
@@ -35,3 +35,4 @@ def retrieve_exif(image_id):
 # for i in imgs:
 #   os.remove(i.default.file.name)
 #   os.remove(i.bigger.file.name)
+

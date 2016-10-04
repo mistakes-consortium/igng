@@ -164,9 +164,34 @@
                         </div>
                     {% endfor %}
                 {% elif gallery.display_density in gallery.display_lapse_class %}
-                    >>> video / autogif of the last xyz <<< <br/>
-                    - remove pagination? <br/>
-                    - more images per page? <br/>
+                    {% if gallery.latest_lapses_exist %}
+                        <div class="row">
+                            {% for c,d in gallery.latest_lapse_instances_for_preview.items %}
+
+                            <div class="col s4 m4">
+                                <div class="card">
+                                    <div class="card-image waves-effect waves-block waves-light">
+                                            <a class="boxme" href="#">
+{#                                                <video width="320" height="240" controls>#}
+{#                                                    <source src="{{ d.preview.file_video_mp4.url }}" type="video/mp4">#}
+{#                                                    <source src="{{ d.preview.file_video_webm.url }}" type="video/webm">#}
+{#                                                    Your browser does not support the video tag.#}
+{#                                                </video>#}
+                                                <img src="{{ d.preview.file_video_gif.url }}"/>
+                                            </a>
+                                            <span class="card-title"></span>
+                                    </div>
+                                    <div class="card-content">
+                                    Info Here TBD
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        No Generated Lapses Yet
+                    {% endif %}
                     {% for object in images %}
                         <img src="{{ object.thumb.url }}" width="{{ gallery.template_display_class }}"
                              id="{{ object.uuid }}" class="tooltip"/>

@@ -82,6 +82,7 @@ INSTALLED_APPS = (
     # our apps
     'common',
     'images',
+    'lapses',
     'token_mgmt',
 )
 
@@ -129,7 +130,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR + "/media"
+MEDIA_ROOT = BASE_DIR + "/media/"
 
 
 TEMPLATE_DIRS = (
