@@ -49,3 +49,5 @@ It's an image gallery that wont log you out randomly.
 #### NOTES
 
 - SITE_URL needs to be set in local_settings for bbcode and other generators to work properly
+
+- apt-get install libfreeimage-dev (else stuff becomes sad)
