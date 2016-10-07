@@ -6,17 +6,19 @@ from django.conf import settings
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 
 from images.models import Gallery, Image
+from images.tasks import generate_thumbs
 from lapses.models import AutoLapseInstance, LapseInstanceStatus, AutoLapseInstanceFile, video_mp4_name_generator, \
     video_webm_name_generator, gif_name_generator, target_path_generator
 
 @shared_task(max_retries=5)
-def do_actual_lapse(lapse_instance_id, fps, output_size, image_path_list=[]):
+def do_actual_lapse(lapse_instance_id, fps, output_size, image_path_list=[], image_id_list=[]):
     image_path_list = [str(i) for i in image_path_list] #forcing str moviepy/issues/293
     print image_path_list
     try:
         clip = ImageSequenceClip(image_path_list, fps=fps)
     except ValueError as exc:
-        do_actual_lapse.retry(args=[lapse_instance_id, fps, output_size, image_path_list], exc=exc, countdown=5)
+        [generate_thumbs.delay(i) for i in image_id_list]
+        do_actual_lapse.retry(kwargs={"lapse_instance_id":lapse_instance_id, "fps":fps, "output_size":output_size, "image_path_list":image_path_list, "image_id_list":image_id_list}, exc=exc, countdown=15)
     lapse_instance = AutoLapseInstance.objects.get(pk=lapse_instance_id)
     uuid = shortuuid.uuid()
 
@@ -64,7 +66,7 @@ def autolapse(gallery_id, force=False, photo_ids=[]):
         for size,index in zip(sizes_to_do,sizes_to_do_as_ints):
             image_file_list = [str(getattr(i, size).path) for i in image_object_list ]
             # print image_file_list
-            do_actual_lapse.delay(lapse_instance_id=lapse_instance.id, fps=l.frames_per_second, output_size=index, image_path_list=image_file_list)
+            do_actual_lapse.delay(lapse_instance_id=lapse_instance.id, fps=l.frames_per_second, output_size=index, image_path_list=image_file_list, image_id_list=image_value_ids)
 
 
 
