@@ -36,7 +36,13 @@
         <div class="right-align">
             {% if is_users_gallery %}
                 <a href="{% url "user_gallery_upload" gallery.uuid %}"
-                   class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i></a>
+                   class="btn-floating btn-large waves-effect waves-light red"><i class="mdi mdi-plus"></i>
+                </a>
+                {% if gallery.display_density in gallery.display_lapse_class %}
+                <a href="{% url "lapse_create" gallery.uuid %}" class="btn-floating btn-large waves-effect waves-light red" title="New Lapse">
+                    <i class="mdi mdi-animation"></i>
+                </a>
+                {% endif %}
             {% elif is_default_gallery %}
                 <a href="{% url "upload_img" %}" class="btn-floating btn-large waves-effect waves-light red"><i
                         class="mdi mdi-plus"></i></a>
@@ -182,7 +188,17 @@
                                             <span class="card-title"></span>
                                     </div>
                                     <div class="card-content">
-                                    Info Here TBD
+                                        <div class="chip">Last {{ d.configuration.image_count }}</div>
+                                        &nbsp;
+                                        <div class="chip">{{ d.configuration.frames_per_second }} FPS</div>
+                                        &nbsp;
+                                        <div class="chip">Every {{ d.configuration.create_new_every }}</div>
+
+                                        <div class="chip right" title="Video"><i class="mdi mdi-magnify"></i></div>
+                                        <div class="right">&nbsp;</div>
+                                        <div class="chip right" title="Settings">
+                                            <a href="{% url "lapse_edit" d.configuration.uuid %}"><i class="mdi mdi-settings"></i></a>
+                                        </div>
                                     </div>
                                 </div>
 

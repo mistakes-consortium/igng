@@ -44,6 +44,10 @@ class AutoLapseInstance(models.Model):
     def preview(self):
         return self.autolapse_files.filter(output_size=3).get()
 
+    @property
+    def default(self):
+        return self.autolapse_files.filter(output_size=2).get()
+
 
 def file_name_generator(instance, filename):
     return "%(gallery)s/%(lapseconfig)s/%(date)s_%(id)s_%(outsize)s" % {

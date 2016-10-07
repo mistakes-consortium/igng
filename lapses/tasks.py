@@ -42,7 +42,7 @@ def do_actual_lapse(lapse_instance_id, fps, output_size, image_path_list=[], ima
     lapse_instance.save()
 
 @shared_task
-def autolapse(gallery_id, force=False, photo_ids=[]):
+def autolapse(gallery_id, force=False):
     g = Gallery.objects.get(pk=gallery_id)
     icnt = g.images.count()
     lapses = g.autolapse_configs.filter(enabled=True)
