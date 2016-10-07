@@ -53,7 +53,7 @@ def autolapse(gallery_id, force=False, photo_ids=[]):
         lapse_instance.save()
 
         image_object_list = g.images.order_by('-uploaded')[0:l.image_count]
-        image_value_ids = image_object_list.values_list('pk', flat=True)
+        image_value_ids = list(image_object_list.values_list('pk', flat=True))
         max_size = l.max_output_size.value
         sizes_to_do = Image.AVAIL_SIZES[max_size:]
         sizes_to_do_as_ints = Image.AVAIL_INTS[max_size:]
