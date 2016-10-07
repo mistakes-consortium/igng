@@ -24,7 +24,7 @@ def mk_lapse(request, gal_uuid):
             # fill some stuff
             obj.user = request.user
             obj.save()
-            autolapse(g.pk, forec=True)
+            autolapse(g.pk, force=True)
             return redirect("lapse_get", obj_uuid=obj.uuid)
     else:
         form = LapseCreateForm()
