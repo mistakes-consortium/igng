@@ -27,7 +27,14 @@ def do_actual_lapse(lapse_instance_id, fps, output_size, image_path_list=[], ima
     path_prefix = target_path_generator(alfile, prefix=settings.MEDIA_ROOT)
     if not os.path.exists(path_prefix):
         os.makedirs(path_prefix)
-    print path_prefix
+    # print path_prefix
+    if clip.h % 2 != 0:
+        clip.size = (clip.w, clip.h -1)
+    if clip.w % 2 != 0:
+        clip.size = (clip.w - 1, clip.h)
+
+
+
     clip.write_videofile(video_mp4_name_generator(alfile, prefix=settings.MEDIA_ROOT))
     clip.write_videofile(video_webm_name_generator(alfile, prefix=settings.MEDIA_ROOT))
     clip.write_gif(gif_name_generator(alfile, prefix=settings.MEDIA_ROOT))
