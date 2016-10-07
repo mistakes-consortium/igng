@@ -194,7 +194,9 @@
                                         &nbsp;
                                         <div class="chip">Every {{ d.configuration.create_new_every }}</div>
 
-                                        <div class="chip right" title="Video"><i class="mdi mdi-magnify"></i></div>
+                                        <div class="chip right" title="Video">
+                                            <a href="{% url "lapse_get" d.configuration.uuid %}"><i class="mdi mdi-magnify"></i></a>
+                                        </div>
                                         <div class="right">&nbsp;</div>
                                         <div class="chip right" title="Settings">
                                             <a href="{% url "lapse_edit" d.configuration.uuid %}"><i class="mdi mdi-settings"></i></a>
