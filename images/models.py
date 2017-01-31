@@ -1,4 +1,6 @@
 import base64
+
+from bitfield import BitField
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -146,6 +148,7 @@ class Gallery(models.Model):
     def latest_lapses_exist(self):
         configs = self.autolapse_configs.all()
         return any([c.autolapse_instances.exists() for c in configs])
+
     @property
     def latest_lapse_instances_for_preview(self):
         print "xyz"
@@ -181,6 +184,27 @@ class Image(models.Model):
     original = models.ImageField(
         upload_to=set_image_name_on_upload,
     )
+
+    _view_mapping = {
+        "view.3d.180": "view_3d_180",
+        "view.3d": "view_3d_360",
+        "view.3d.360": "view_3d_360",
+        "view.3d.sphere": "view_3d_360",
+        "view.sphere": "view_3d_360",
+        "view.pano": "view_2d_pano",
+        "view.pan": "view_2d_pano",
+        "view.panorama": "view_2d_pano",
+        "view.panoramic": "view_2d_pano",
+    }
+    view_flags = BitField(
+        flags=(
+            ('view_3d_180', '180 Degrees 3D'),
+            ('view_3d_360', '360 Degrees 3D'),
+            ('view_2d_pano', 'Panoramic'),
+        ), null=True
+    )
+    # for multiple tags we use the first
+    view_default = models.CharField(max_length=32, null=True, blank=True)
 
     def self_uuid(self):
         return self.uuid

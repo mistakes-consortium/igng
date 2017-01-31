@@ -1,0 +1,53 @@
+{% extends "igng_base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block hero %}
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h1 class="header center purple-text">iGNG</h1>
+
+            <div class="row center">
+                <h5 class="header col s12 light">
+                    {% if gallery_name %}
+                        Your Tags
+                    {% else %}
+                        Gallery Tags for {{ gallery_name }}
+                    {% endif %}
+                </h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block contentarea %}
+
+    <div class="container">
+        <div class="section">
+            <p>
+                {% for t in tags %}
+                    <div class="chip">
+                        {% if gallery_name %}
+                        <a href="{% url 'tags_gallery_detail' gallery_name.uuid t.name %}">{{ t.name }}</a>
+                        {% else %}
+                        <a href="{% url 'tags_user_detail' t.name %}">{{ t.name }}</a>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year
+                format: 'yyyy-mm-dd'
+            });
+            $('select').material_select();
+        });
+    </script>
+{% endblock %}

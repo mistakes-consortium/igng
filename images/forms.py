@@ -20,6 +20,19 @@ class ImageUploadForm(forms.ModelForm):
         model = Image
         fields = ('title', 'original', 'tags')
 
+class ImageSettingsForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ImageSettingsForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Div('title'),
+            'tags',
+        )
+        self.helper.add_input(Submit('submit', 'Submit'))
+
+    class Meta:
+        model = Image
+        fields = ('title', 'tags')
 
 # TODO validate the unique_together here :<
 class GallerySettingsForm(forms.ModelForm):

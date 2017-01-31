@@ -9,7 +9,11 @@
             <h1 class="header center purple-text">iGNG</h1>
 
             <div class="row center">
+                {% if not custom_title %}
                 <h5 class="header col s12 light">Upload</h5>
+                {% else %}
+                <h5 class="header col s12 light">{{ custom_title }}</h5>
+                {% endif %}
             </div>
 
         </div>

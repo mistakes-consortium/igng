@@ -11,12 +11,13 @@
 
             <div class="row center">
                 <h5 class="header col s12 light">
-                    {% if gallery_name %}
-                        Images in {{ gallery_name }}
+                    {% if gallery_name and not is_users_gallery %}
+                        Images in {{ gallery_name|safe }}
                     {% else %}
                         Your Images
                     {% endif %}
-                    {% if is_users_gallery %}
+
+                    {% if is_users_gallery and gallery.deletable %}
                         <a class="titlelinks" href="{% url "user_gallery_settings" gallery.uuid %}?ret=1"
                            title="Settings">
                             <i class="mdi mdi-settings"></i>
@@ -59,7 +60,7 @@
                         <div class="col {{ gallery.template_display_class }}">
                             <div class="card">
                                 <div class="card-image waves-effect waves-block waves-light">
-                                    <a class="boxme" href="{{ object.bigger.url }}">
+                                    <a class="boxme" href="{% url 'image_detail' object.uuid %}">
                                         <img src="{{ object.preview.url }}"/>
                                     </a>
                                     <span class="card-title">{{ object.title }}</span>
@@ -72,7 +73,10 @@
                                     {% if object.tags.exists %}
                                         <p>
                                             {% for t in object.tags.all %}
-                                                <a class="">{{ t }}</a>
+                                                <div class="chip">
+                                                    <a href="{% url 'tags_gallery_detail' object.gallery.uuid t.name %}">{{ t }}</a>
+                                                </div>
+
                                             {% endfor %}
                                         </p>
                                     {% else %}
@@ -98,6 +102,7 @@
                                         {% endif %}
                                         LINKS <i class="mdi mdi-close right"></i></span>
                                         <div class="card-action">
+                                            <a href="{% url 'image_detail' object.uuid %}">Linked</a>
                                             <a href="{{ object.full_fixed.url }}">Full Size</a>
                                             <a href='{{ object.bigger.url }}'>Bigger</a>
                                             <a href='{{ object.default.url }}'>Default Size</a>

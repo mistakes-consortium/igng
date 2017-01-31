@@ -36,3 +36,23 @@ def retrieve_exif(image_id):
 #   os.remove(i.default.file.name)
 #   os.remove(i.bigger.file.name)
 
+@shared_task
+def update_flags_post_save(instance_id):
+    """this had to be done here because the post_save behaviour for the tagging engine is funky"""
+    instance = Image.objects.get(pk=instance_id)
+    image_as_qs = Image.objects.filter(pk=instance.pk)
+
+    # iterate through tags to find flags
+    flags_to_set = []
+    for tag in instance.tags.all():
+        if tag.name in Image._view_mapping:
+            flags_to_set.append(Image._view_mapping[tag.name])
+
+    # remove dupes
+    flags_to_set = list(set(flags_to_set))
+    #
+    statement = 0
+    for f in flags_to_set:
+        statement = statement | getattr(Image.view_flags, f)
+
+    image_as_qs.update(view_flags=statement)

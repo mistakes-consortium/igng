@@ -1,10 +1,13 @@
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
+from taggit.models import Tag, TaggedItem
 
-from images.forms import ImageUploadForm, GallerySettingsForm, GalleryCreateForm
+from images.forms import ImageUploadForm, GallerySettingsForm, GalleryCreateForm, ImageSettingsForm
 from images.models import Image, Gallery
 
 
@@ -31,6 +34,7 @@ def upload(request, gallery_uuid=None):
             obj.gallery = gallery
             obj.user = request.user
             obj.save()
+            form.save_m2m() # fix for missing tags
             return redirect("upload_success", obj_uuid=obj.uuid)
     else:
         form = ImageUploadForm()
@@ -46,6 +50,14 @@ def upload_success(request, obj_uuid):
     context['object'] = object
     context = RequestContext(request, context)
     return render(request, "upload_success.html", context)
+
+# sharable
+def image_detail(request, obj_uuid):
+    context = {}
+    object = get_object_or_404(Image, uuid=obj_uuid)
+    context['object'] = object
+    context = RequestContext(request, context)
+    return render(request, "image_detail.html", context)
 
 
 @login_required
@@ -215,3 +227,109 @@ def linked_gallery_view(request, obj_uuid):
     }
     context = RequestContext(request, context)
     return render_to_response('image_list.html', context)
+
+
+# tag views
+@login_required
+def tags_user_all(request):
+    context = {}
+
+    user = request.user
+    # ct = ContentType.objects.get_for_model(Image)
+    # TaggedItem.objects.filter(content_type=ct, content_object__user=user)
+    imgs = Image.objects.filter(user=user).values_list('pk', flat=True)
+    tags = Tag.objects.filter(image__in=imgs).distinct()
+
+    context['tags'] = tags
+    context['gallery_name'] = False
+    context = RequestContext(request, context)
+    return render(request, "taglist.html", context)
+
+@login_required
+def tags_user_detail(request, tag):
+    tag = get_object_or_404(Tag, name=tag)
+    # see user_default_gallery_images()
+    imgs = Image.objects.filter(user=request.user, tags__name=tag).prefetch_related('tags')
+
+    paginator = Paginator(imgs, 12)
+    page = request.GET.get('page')
+    try:
+        imgs = paginator.page(page)
+    except PageNotAnInteger:
+        imgs = paginator.page(1)
+    except EmptyPage:
+        imgs = paginator.page(paginator.num_pages)
+    context = {
+        "images": imgs,
+        "gallery": Gallery.objects.first(),
+        "is_default_gallery": True,
+        "gallery_name": "tag <b>%s</b>" % (tag.name,),
+    }
+    context = RequestContext(request, context)
+    return render_to_response('image_list.html', context)
+
+def tags_gallery_all(request, obj_uuid):
+    context = {}
+
+    gallery = get_object_or_404(Gallery, uuid=obj_uuid)
+    imgs = gallery.images.all().values_list('pk', flat=True)
+    tags = Tag.objects.filter(image__in=imgs).distinct()
+
+    context['tags'] = tags
+    context['gallery_name'] = gallery
+    context = RequestContext(request, context)
+    return render(request, "taglist.html", context)
+
+def tags_gallery_detail(request, obj_uuid, tag): # look into CBVs for the gallery image listings...
+    tag = get_object_or_404(Tag, name=tag)
+    gallery = get_object_or_404(Gallery, uuid=obj_uuid)
+    imgs = Image.objects.filter(tags__name=tag, gallery=gallery).prefetch_related('tags')
+    paginator = Paginator(imgs, 12)
+    page = request.GET.get('page')
+    try:
+        imgs = paginator.page(page)
+    except PageNotAnInteger:
+        imgs = paginator.page(1)
+    except EmptyPage:
+        imgs = paginator.page(paginator.num_pages)
+
+    if request.user == gallery.user:
+        gallery_name = "tag <b>%s</b> under gallery <a href=\"%s\">%s</a> - <a href=\"%s\" class=\"purple-text accent-1\">All Tag Instances</a>" % (
+            tag.name,
+            reverse_lazy("user_gallery_images", args=[gallery.uuid]),
+            gallery.title,
+            reverse_lazy("tags_user_detail", args=[tag.name]),
+        )
+    else:
+        gallery_name = "tag <b>%s</b> under gallery <a href=\"%s\">%s</a>" % (
+            tag.name,
+            reverse_lazy("user_gallery_images", args=[gallery.uuid]),
+            gallery.title
+        )
+    context = {
+        "images": imgs,
+        "gallery": gallery,
+        "is_default_gallery": True,
+        "gallery_name": gallery_name
+    }
+    context = RequestContext(request, context)
+    return render_to_response('image_list.html', context)
+
+@login_required
+def user_image_settings(request, obj_uuid):
+    queryset = Image.objects.filter(user=request.user)
+    image = get_object_or_404(queryset, uuid=obj_uuid)
+    context = {}
+
+    if request.method == 'POST':
+        form = ImageSettingsForm(request.POST, instance=image)
+        if form.is_valid():
+            form.save()
+            return redirect("image_detail", obj_uuid=image.uuid)
+    else:
+        form = ImageSettingsForm(instance=image)
+
+    context['form'] = form
+    context['custom_title'] = "Change Image"
+    context = RequestContext(request, context)
+    return render(request, "upload.html", context)

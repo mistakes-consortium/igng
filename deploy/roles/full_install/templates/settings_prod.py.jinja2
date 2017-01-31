@@ -1,0 +1,95 @@
+DEBUG=False
+ALLOWED_HOSTS=['{{ site_url }}', '*.{{ site_url }}']
+
+import raven
+{% if raven_url %}
+RAVEN_CONFIG = {
+    'dsn': '{{ raven_url }}',
+}
+{% endif %}
+
+STATIC_ROOT = "{{ app_dir }}/public_html/static"
+MEDIA_ROOT = "{{ app_dir }}/public_html/media"
+SITE_URL = "http://{{ site_url }}"
+
+{% if raven_url %}
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'celery':{
+            'handlers': ['console', 'sentry'],
+            'level': "DEBUG",
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
+{% endif %}
+
+DATABASES = {
+    'default': {
+        'ENGINE': '{{ db_engine }}',
+        'NAME': '{{ db_name }}',
+        'USER': '{{ db_user }}',
+        'PASSWORD': '{{ db_pass }}',
+        'HOST': '{{ db_host }}',
+        'PORT': '{{ db_port }}',
+    }
+}
+
+CACHES = {
+    'default': {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    'image_kit': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'imagekit_cache',
+    }
+}
+
+
+IMAGEKIT_DEFAULT_CACHEFILE_BACKEND = 'imagekit.cachefiles.backends.Async'
+IMAGEKIT_CACHE_BACKEND = "image_kit"
+SESSION_COOKIE_AGE = 157248000
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+SESSION_CACHE_ALIAS = "default"

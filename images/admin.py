@@ -1,3 +1,5 @@
+from bitfield.forms import BitFieldCheckboxSelectMultiple
+from bitfield import BitField
 from django.contrib import admin
 
 # Register your models here.
@@ -14,6 +16,10 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'admin_thumbnail')
     admin_thumbnail = AdminThumbnail(image_field='tiny_thumb')
     actions = [run_exif]
+
+    formfield_overrides = {
+        BitField: {'widget': BitFieldCheckboxSelectMultiple},
+    }
 
 
 admin.site.register(Image, ImageAdmin)
