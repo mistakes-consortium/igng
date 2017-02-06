@@ -16,12 +16,22 @@
   <div class="container">
     <div class="section">
         <div class="row">
-        <div class="col s1 m1">&nbsp;</div>
+        <div class="col s1 m1">
+            {% if obj_prev %}
+            <a href="{% url 'image_detail' obj_prev.uuid %}">
+                <i class="mdi mdi-chevron-left mdi-48px"></i>
+            </a>
+            {% else %}
+            &nbsp;
+            {% endif %}
+        </div>
         <div class="col s10 s10">
           <div class="card">
             <div class="card-image">
-              <img src="{{ object.default.url }}">
-              <span class="card-title">
+              <div id="image_container">
+                  <img src="{{ object.default.url }}" id="image_detail">
+              </div>
+              <span class="card-title" id="image_settings">
                   <a class="titlelinks white-text" href="{% url "user_image_settings" object.uuid %}?ret=1" title="Settings">
                     <i class="mdi mdi-settings"></i>
                   </a>
@@ -48,20 +58,64 @@
               <a href='{{ object.preview.url }}'>Preview Size</a>
               <a href='{{ object.thumb.url }}'>Thumbnail</a>
               <a href='{{ object.tiny_thumb}}'>Tiny Thumbnail</a>
+              <span class="chip" id="image_content"></span>
+                {% for a in available %}
+                <span class="chip">
+                    <a href="{% url 'image_detail' object.uuid %}?ui={{ a }}">
+                        <i class="mdi mdi-rotate-3d"></i>
+                        {{ a|title }}
+                    </a>
+                </span>
+                {% endfor %}
             </div>
           </div>
         </div>
-        <div class="col s1 m1"></div>
+        <div class="col s1 m1">
+            {% if obj_next %}
+            <a href="{% url 'image_detail' obj_next.uuid %}">
+                <i class="mdi mdi-chevron-right mdi-48px"></i>
+            </a>
+            {% else %}
+            &nbsp;
+            {% endif %}
+        </div>
       </div>
 
     </div>
   </div>
   {% endblock %}
 
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="{% static "js/materialize.js" %}"></script>
-  <script src="{% static "js/init.js" %}"></script>
+  {% block scripts %}
 
-  </body>
-</html>
+    {% if ui_override == "view_3d_360" %}
+        <link rel="stylesheet" href="{% static "css/photosphere/photo-sphere-viewer.min.css" %}">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+        <script src="{% static "js/photosphere/D.min.js" %}"></script>
+        <script src="{% static "js/photosphere/uevent.js" %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.0/doT.min.js"></script>
+        <script src="{% static "js/photosphere/photo-sphere-viewer.min.js" %}"></script>
+        <script>
+            $(document).ready(function () {
+                $("#image_detail").hide();
+                var settings = $("#image_settings").html();
+                $("#image_content").append(settings);
+                var viewer = PhotoSphereViewer({
+                    container: "image_container",
+                    panorama: "http://{{ request.get_host }}{{ object.full_fixed.url }}",
+                    caption: '{{ object.title }}',
+                    loading_img: 'http://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
+                    navbar: 'autorotate zoom download caption fullscreen',
+                    default_fov: 70,
+                    mousewheel: false,
+                    size: {
+                      height: 700
+                    }
+                });
+            });
+        </script>
+    {% elif ui_override == "view_3d_180"%}
+    {% elif ui_override == "view_2d_pano"%}
+    {% endif %}
+
+
+  {% endblock %}

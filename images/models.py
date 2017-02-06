@@ -15,7 +15,9 @@ from pilkit.processors.resize import ResizeToFill, SmartResize, Resize, ResizeTo
 from PIL import Image as IMG  # prevents clobbering of my namespace
 from PIL.ExifTags import TAGS
 import shortuuid
-from taggit.managers import TaggableManager
+# from taggit.managers import TaggableManager
+from taggit_autosuggest.managers import TaggableManager
+
 
 # User = get_user_model()
 from django.conf import settings
@@ -304,6 +306,36 @@ class Image(models.Model):
     def cached_tiny_thumb(self):
         generator = ImageCacheFile(self.tiny_thumb)
         return generator.generate()
+
+    def get_next_by_gallery_ordering(self):
+        gallery = self.gallery
+        gallery_sort = gallery.display_sort_string
+        if gallery_sort == ['uploaded']:
+            try:
+                return self.get_next_by_uploaded(gallery=gallery)
+            except:
+                return None
+        if gallery_sort == ['-uploaded']:
+            try:
+                return self.get_previous_by_uploaded(gallery=gallery)
+            except:
+                return None
+        # todo add EXIF based sorting
+
+    def get_prev_by_gallery_ordering(self):
+        gallery = self.gallery
+        gallery_sort = gallery.display_sort_string
+        if gallery_sort == ['uploaded']:
+            try:
+                return self.get_previous_by_uploaded(gallery=gallery)
+            except:
+                return None
+        if gallery_sort == ['-uploaded']:
+            try:
+                return self.get_next_by_uploaded(gallery=gallery)
+            except:
+                return None
+        # todo add EXIF based sorting
 
 class FeaturedImage(models.Model):
     user = models.ForeignKey(User)

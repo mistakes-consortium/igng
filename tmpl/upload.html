@@ -28,6 +28,34 @@
             </form>
         </div>
     </div>
+
+    {{ media }}
+{% endblock %}
+
+{% block csso %}
+    {# these need to be up here because of how it decides to work #}
+    <script src="{% static 'admin/js/jquery.js' %}"></script>
+    <link  href="{% static 'jquery-autosuggest/css/autoSuggest-upshot.css' %}"/>
+    <script src="{% static 'jquery-autosuggest/js/jquery.autoSuggest.minified.js' %}"> </script>
+    <style>
+        .as-selection-item {
+            background-color: #90caf9;
+            float:left;
+            margin-top: 2.5em;
+            margin-left: 1em;
+            margin-right: 1em;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        .as-close {
+            color: white;
+            font-size: 110%;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('select').material_select();
@@ -35,5 +63,3 @@
 
     </script>
 {% endblock %}
-
-

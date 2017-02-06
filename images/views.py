@@ -56,6 +56,35 @@ def image_detail(request, obj_uuid):
     context = {}
     object = get_object_or_404(Image, uuid=obj_uuid)
     context['object'] = object
+    context['obj_next'] = object.get_next_by_gallery_ordering()
+    context['obj_prev'] = object.get_prev_by_gallery_ordering()
+
+    ui_override = request.GET.get("ui", None)
+    context['ui_override'] = None
+
+
+    available = []
+    for k, v in object.view_flags.iteritems():
+        if v:
+            available.append(k)
+    context['available'] = available
+
+    if ui_override in object.view_flags.keys():
+        context['ui_override'] = ui_override
+
+    elif ui_override and object.view_flags != 0:
+        if ui_override in available:
+            context['ui_override'] = ui_override
+
+    elif object.view_flags != 0:
+        context['ui_override'] = available[0]
+
+    else:
+        pass
+
+
+
+
     context = RequestContext(request, context)
     return render(request, "image_detail.html", context)
 

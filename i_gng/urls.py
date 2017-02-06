@@ -18,7 +18,8 @@ urlpatterns = patterns(
     url(r'^l/', include("lapses.urls")),
     url(r'^t/', include("token_mgmt.urls")),
 
-    url(r'^$', "images.views.index")
+    url(r'^$', "images.views.index"),
+    (r'^taggit_autosuggest/', include('taggit_autosuggest.urls')),
 )
 
 if settings.DEBUG:
