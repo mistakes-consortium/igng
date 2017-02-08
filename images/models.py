@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime
 
 from bitfield import BitField
 from django.contrib.auth import get_user_model
@@ -55,12 +56,14 @@ class Gallery(models.Model):
     class DisplaySort(Enum):
         UPLOADED_ASC = 0
         UPLOADED_DSC = 1
-        # EXIF_ASC = 2
-        # EXIF_DSC = 3
+        EXIF_ASC = 2
+        EXIF_DSC = 3
 
         class Labels:
-            UPLOADED_ASC = "Oldest First"
-            UPLOADED_DSC = "Newest First"
+            UPLOADED_ASC = "Oldest Uploaded First"
+            UPLOADED_DSC = "Newest Uploaded First"
+            EXIF_ASC = "Taken First"
+            EXIF_DSC = "Taken Last"
 
     class DisplaySize(Enum):
         TINY = 0
@@ -145,6 +148,11 @@ class Gallery(models.Model):
             return ["uploaded"]
         elif self.display_sort == Gallery.DisplaySort.UPLOADED_DSC:
             return ["-uploaded"]
+
+        elif self.display_sort == Gallery.DisplaySort.EXIF_ASC:
+            return ["exif_timestamp"]
+        elif self.display_sort == Gallery.DisplaySort.EXIF_DSC:
+            return ["-exif_timestamp"]
 
     @property
     def latest_lapses_exist(self):
@@ -251,6 +259,7 @@ class Image(models.Model):
     AVAIL_INTS = [0,1,2,3,4,5]
 
     exif_data = models.ManyToManyField("EXIFEntry", blank=True)
+    exif_timestamp = models.DateTimeField(null=True, blank=True)
 
     @property
     def uuid_as_b64(self):
@@ -268,7 +277,10 @@ class Image(models.Model):
             do = True
 
         if do:
-            exif_raw = image._getexif()
+            try:
+                exif_raw = image._getexif()
+            except: # no usable exif
+                return
             # I guess this deals with the compactness, so it needs to be decoded?
             if exif_raw:
                 exif_decoded = {TAGS.get(k): v for k, v in exif_raw.iteritems()}
@@ -280,6 +292,11 @@ class Image(models.Model):
 
                     ee, ce = EXIFEntry.objects.get_or_create(key=ek, value=ev)
                     self.exif_data.add(ee)
+
+                    if key == "DateTime":
+                        value_stf = datetime.strptime(value, "%Y:%m:%d %H:%M:%S")
+                        self.exif_timestamp = value_stf
+                        self.save()
             else:
                 pass # no exif
 
