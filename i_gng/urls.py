@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^a/settings$', 'common.views.user_settings', name="usersettings"),
     url(r'^a/settings/ui', 'common.views.user_settings_ui', name="usersettings_ui"),
     (r'^a/', include('allauth.urls')),
+    url(r'^ra/', include('rest_auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^i/', include("images.urls")),
     url(r'^l/', include("lapses.urls")),

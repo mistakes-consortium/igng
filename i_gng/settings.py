@@ -46,7 +46,7 @@ INSTALLED_APPS = (
 
     # the most necessary tool of all
     'rest_framework',
-     'rest_framework.authtoken',
+    'rest_framework.authtoken',
 
     # some niceties for forms
     # 'materializecssform',
@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'rest_auth',
 
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.flickr',
