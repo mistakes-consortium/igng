@@ -172,6 +172,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_URL = reverse_lazy('account_login')
+LOGIN_REDIRECT_URL = '/i/i/'
 
 SITE_ID = 1
 
