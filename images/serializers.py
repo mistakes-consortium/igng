@@ -79,12 +79,12 @@ class PasteImageUploadSerializer(serializers.ModelSerializer):
     def validate_gallery(self, value):
         u = self.context['request'].user
         if u.galleries.filter(uuid=value.uuid).exists():
-            print "YAY"
+            # print "YAY"
             return value
         elif value == None:
-            print "NULL"
+            # print "NULL"
             return value
-        print "BOO  "
+        # print "BOO  "
         raise serializers.ValidationError("Non-existent Gallery")
 
 

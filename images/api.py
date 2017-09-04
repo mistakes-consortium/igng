@@ -4,6 +4,7 @@ from django.db.models import Q
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
@@ -15,6 +16,7 @@ from rest_framework import mixins
 from images.models import Gallery, Image
 from images.serializers import GallerySerializer, ImageSerializer, ImageUploadSerializer, PasteImageUploadSerializer, \
     PasteReturnSerializer
+from token_mgmt.serializers import TokenSerializer
 
 
 class PublicGalleryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -143,3 +145,19 @@ class PasteImageViewSet(mixins.CreateModelMixin, GenericViewSet):
         re_serialized = PasteReturnSerializer(instance=o)
         return Response(re_serialized.data, status=status.HTTP_201_CREATED, headers=headers)
         # super(PasteImageViewSet, self).create(request, *args, **kwargs)
+
+
+class TokenViewSet(mixins.ListModelMixin, GenericViewSet):
+    def list(self, request, *args, **kwargs):
+        tokens = Token.objects.filter(user=request.user)
+        serialized = TokenSerializer(tokens, many=True)
+        return Response(serialized.data)
+
+    @list_route(methods=['GET'])
+    def latest(self, request):
+        try:
+            token = Token.objects.filter(user=request.user).latest('created')
+        except Token.DoesNotExist:
+            return Response({"latest":None})
+        serialized = TokenSerializer(token)
+        return Response({"latest":serialized.data})

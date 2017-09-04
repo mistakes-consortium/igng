@@ -193,6 +193,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -208,6 +209,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 try:
     path = os.path.join(BASE_DIR, "i_gng", "local_settings.py")
     f = open(path)
-    exec f.read()
+    exec(f.read())
 except IOError:
-    print "No local settings found!"
+    print("No local settings found!")
