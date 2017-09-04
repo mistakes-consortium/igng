@@ -7,6 +7,7 @@ router.register(r'public/gallery', api.PublicGalleryViewSet, base_name="gallerie
 router.register(r'user/gallery', api.UserGalleryViewSet, base_name="galleries_all")
 router.register(r'user/images', api.ImageViewSet, base_name="images_all")
 router.register(r'upload', api.PasteImageViewSet, base_name="images_all_upload")
+router.register(r'token', api.TokenViewSet, base_name="tokens")
 # urlpatterns = router.urls
 urlpatterns = patterns('images.views',
                        url(r'^$', views.index),
