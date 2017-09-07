@@ -86,7 +86,7 @@ class UserGalleryViewSet(viewsets.ModelViewSet):
         if serialized.is_valid(raise_exception=True):
             o = serialized.save()
             serialized_out = ImageSerializer(instance=o)
-            return Response({"msg":"Upload Success", 'data':serialized_out.data, 'uri':reverse_lazy("images_all-detail", request=request, uuid=o.uuid)}, status=status.HTTP_201_CREATED)
+            return Response({"msg":"Upload Success", 'data':serialized_out.data, 'uri':reverse_lazy("images_all-detail", args=[o.uuid], request=request)}, status=status.HTTP_201_CREATED)
         
         
 
