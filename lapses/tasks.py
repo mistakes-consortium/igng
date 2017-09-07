@@ -13,7 +13,7 @@ from lapses.models import AutoLapseInstance, LapseInstanceStatus, AutoLapseInsta
 @shared_task(max_retries=5)
 def do_actual_lapse(lapse_instance_id, fps, output_size, image_path_list=[], image_id_list=[]):
     image_path_list = [str(i) for i in image_path_list] #forcing str moviepy/issues/293
-    print image_path_list
+    # print image_path_list
     try:
         clip = ImageSequenceClip(image_path_list, fps=fps)
     except ValueError as exc:
@@ -68,7 +68,7 @@ def autolapse(gallery_id, force=False):
 
         lapse_instance.status=LapseInstanceStatus.WORKING
         lapse_instance.save()
-        print lapse_instance.uuid
+        # print lapse_instance.uuid
 
         for size,index in zip(sizes_to_do,sizes_to_do_as_ints):
             image_file_list = [str(getattr(i, size).path) for i in image_object_list ]

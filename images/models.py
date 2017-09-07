@@ -161,7 +161,7 @@ class Gallery(models.Model):
 
     @property
     def latest_lapse_instances_for_preview(self):
-        print "xyz"
+        # print "xyz"
         configs = self.autolapse_configs.all()
         inst = {}
         for c in configs:
@@ -226,7 +226,8 @@ class Image(models.Model):
     )
     bigger = ImageSpecField(
         source="full_fixed",
-        processors=[ResizeToCover(1440, 1080, upscale=False)],
+        processors=[ResizeToCover(1440
+, 1080, upscale=False)],
         format="JPEG",
         options={'quality': 80, 'prefix':"b"}
     )

@@ -10,6 +10,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.reverse import reverse_lazy
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 
@@ -84,7 +85,8 @@ class UserGalleryViewSet(viewsets.ModelViewSet):
         serialized = ImageUploadSerializer(data=request.data)
         if serialized.is_valid(raise_exception=True):
             o = serialized.save()
-            return Response({"msg":"Upload Success", 'data':serialized.data}, status=status.HTTP_201_CREATED)
+            serialized_out = ImageSerializer(instance=o)
+            return Response({"msg":"Upload Success", 'data':serialized_out.data, 'uri':reverse_lazy("images_all-detail", request=request, uuid=o.uuid)}, status=status.HTTP_201_CREATED)
         
         
 
@@ -148,6 +150,7 @@ class PasteImageViewSet(mixins.CreateModelMixin, GenericViewSet):
 
 
 class TokenViewSet(mixins.ListModelMixin, GenericViewSet):
+    permission_classes = [IsAuthenticated]
     def list(self, request, *args, **kwargs):
         tokens = Token.objects.filter(user=request.user)
         serialized = TokenSerializer(tokens, many=True)
