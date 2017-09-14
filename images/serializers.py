@@ -1,6 +1,7 @@
 import datetime
 
 from rest_framework.reverse import reverse
+from taggit_serializer.serializers import TagListSerializerField, TaggitSerializer
 
 from images.fields import Base64ImageField
 from images.models import Gallery, Image, EXIFEntry
@@ -55,12 +56,13 @@ class ImageSerializer(serializers.ModelSerializer):
         return (obj.uploaded - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()
 
 
-class ImageUploadSerializer(serializers.ModelSerializer):
+class ImageUploadSerializer(TaggitSerializer,serializers.ModelSerializer):
     original = serializers.FileField()
+    tags = TagListSerializerField()
 
     class Meta:
         model = Image
-        fields = ('user', 'gallery', 'title', 'original')
+        fields = ('user', 'gallery', 'title', 'original', 'tags')
 
 class PasteImageUploadSerializer(serializers.ModelSerializer):
     original = Base64ImageField(max_length=None, use_url=True,)

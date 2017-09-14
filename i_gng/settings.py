@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     # for tagging
     'taggit',
     'taggit_autosuggest',
+    'taggit_serializer',
 
     # for logging
     'raven.contrib.django.raven_compat',
