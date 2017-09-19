@@ -58,7 +58,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class ImageUploadSerializer(TaggitSerializer,serializers.ModelSerializer):
     original = serializers.FileField()
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(required=False)
 
     class Meta:
         model = Image
