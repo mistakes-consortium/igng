@@ -21,6 +21,9 @@ class ImageAdmin(admin.ModelAdmin):
         BitField: {'widget': BitFieldCheckboxSelectMultiple},
     }
 
+    fields = ('gallery','uploaded', 'title', 'tags')
+
+
 
 admin.site.register(Image, ImageAdmin)
 admin.site.register(Gallery)
