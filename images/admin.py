@@ -21,7 +21,7 @@ class ImageAdmin(admin.ModelAdmin):
         BitField: {'widget': BitFieldCheckboxSelectMultiple},
     }
 
-    fields = ('gallery','uploaded', 'title', 'tags')
+    fields = ('gallery', 'title', 'tags', 'view_flags')
 
 
 

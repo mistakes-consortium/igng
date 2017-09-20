@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field, Div, Row
+from crispy_forms.layout import Submit, Layout, Field, Div, Row, HTML
 from crispy_forms_materialize.layout import FileField
 from django import forms
 from images.models import Image, Gallery
@@ -33,6 +33,37 @@ class ImageSettingsForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ('title', 'tags')
+
+class ImageSettingsTagForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ImageSettingsTagForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            HTML('<small class="hit comma if it doesn\'t autosuggest"></small>'),
+            'tags',
+
+        )
+        self.helper.add_input(Submit('submit', 'Submit'))
+
+    class Meta:
+        model = Image
+        fields = ('tags',)
+
+class UserSettingsImageGalleryForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super(UserSettingsImageGalleryForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            'tags',
+
+        )
+        self.helper.add_input(Submit('submit', 'Submit'))
+        self.fields['gallery'].queryset = Gallery.objects.filter(user=user)
+
+    class Meta:
+        model = Image
+        fields = ('gallery',)
 
 # TODO validate the unique_together here :<
 class GallerySettingsForm(forms.ModelForm):

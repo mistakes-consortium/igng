@@ -1,0 +1,88 @@
+{% extends "igng_base.html" %}
+{% load staticfiles %}
+
+  {% block hero %}
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <div class="row center">
+        <h5 class="header col s12 light">Image Moved to {{ object.gallery }}</h5>
+      </div>
+
+    </div>
+  </div>
+  {% endblock %}
+  {% block contentarea %}
+
+  <div class="container">
+    <div class="section">
+        <div class="row">
+        <div class="col s1 m1">
+             <a href="{% url "user_gallery_images" from %}">Back: {{ from_title }} </a>
+        </div>
+        <div class="col s10 s10">
+          <div class="card">
+            <div class="card-image">
+              <div id="image_container">
+                  <img src="{{ object.default.url }}" id="image_detail">
+              </div>
+              <span class="card-title" id="image_settings">
+                  {{ object.title }}
+              </span>
+            </div>
+{#            <div class="card-content">#}
+{#                <p class="grey-text lighten-1">Undo</p>#}
+{#            </div>#}
+            <div class="card-action">
+                <a href="{% url "image_settings_gallery_move_do" object.uuid to from %}">UNDO</a>
+            </div>
+          </div>
+        </div>
+        <div class="col s1 m1">
+            {% if obj_next %}
+            <a href="{% url 'image_detail' obj_next.uuid %}">
+                <i class="mdi mdi-chevron-right mdi-48px"></i>
+            </a>
+            {% else %}
+                <a href="{% url "user_gallery_images" to %}">View: {{ object.gallery }}</a>
+            {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {% endblock %}
+
+  {% block scripts %}
+
+    {% if ui_override == "view_3d_360" %}
+        <link rel="stylesheet" href="{% static "css/photosphere/photo-sphere-viewer.min.css" %}">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+        <script src="{% static "js/photosphere/D.min.js" %}"></script>
+        <script src="{% static "js/photosphere/uevent.js" %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.0/doT.min.js"></script>
+        <script src="{% static "js/photosphere/photo-sphere-viewer.min.js" %}"></script>
+        <script>
+            $(document).ready(function () {
+                $("#image_detail").hide();
+                var settings = $("#image_settings").html();
+                $("#image_content").append(settings);
+                var viewer = PhotoSphereViewer({
+                    container: "image_container",
+                    panorama: "http://{{ request.get_host }}{{ object.full_fixed.url }}",
+                    caption: '{{ object.title }}',
+                    loading_img: 'http://photo-sphere-viewer.js.org/assets/photosphere-logo.gif',
+                    navbar: 'autorotate zoom download caption fullscreen',
+                    default_fov: 70,
+                    mousewheel: false,
+                    size: {
+                      height: 700
+                    }
+                });
+            });
+        </script>
+    {% elif ui_override == "view_3d_180"%}
+    {% elif ui_override == "view_2d_pano"%}
+    {% endif %}
+
+
+  {% endblock %}

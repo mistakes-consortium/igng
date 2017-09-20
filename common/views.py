@@ -9,8 +9,7 @@ from common.forms import ProfileUIForm
 
 @login_required
 def user_settings(request):
-    context = RequestContext(request)
-    return render_to_response("settings.html", context)
+    return render(request, "settings.html", {})
 
 @login_required
 def user_settings_ui(request):
@@ -24,5 +23,4 @@ def user_settings_ui(request):
         form = ProfileUIForm(instance=request.user.profile)
 
     context['form'] = form
-    context = RequestContext(request, context)
     return render(request, "form_generic.html", context)

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.shortcuts import render, render_to_response, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.template.context import RequestContext
@@ -29,7 +29,6 @@ def mk_lapse(request, gal_uuid):
     else:
         form = LapseCreateForm()
     context['form'] = form
-    context = RequestContext(request, context)
     return render(request, "gallery_settings.html", context)
 
 def update_lapse(request, obj_uuid):
@@ -46,7 +45,6 @@ def update_lapse(request, obj_uuid):
     else:
         form = LapseCreateForm(instance=lapse)
     context['form'] = form
-    context = RequestContext(request, context)
 
     return render(request, "gallery_settings.html", context)
 
@@ -55,5 +53,4 @@ def get_lapse(request, obj_uuid):
     config = get_object_or_404(AutoLapseConfiguration, uuid=obj_uuid)
     latest = config.autolapse_instances.latest()
     context['latest'] = latest
-    context = RequestContext(request, context)
     return render(request, "lapse_detail.html", context=context)

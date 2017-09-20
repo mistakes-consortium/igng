@@ -153,15 +153,12 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                # Already defined Django-related contexts here
-
-                # `allauth` needs this from django
-                'django.core.context_processors.request',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
-
-                # `allauth` specific context processors
-                'allauth.account.context_processors.account',
-                'allauth.socialaccount.context_processors.socialaccount',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -176,10 +173,12 @@ LOGIN_URL = reverse_lazy('account_login')
 LOGIN_REDIRECT_URL = '/i/i/'
 
 SITE_ID = 1
+SITE_URL = "https://i.gng.io"
 
 # other configs
 
 CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
+CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'materialize_css_forms')
 # IMAGEKIT_SPEC_CACHEFILE_NAMER = 'imagekit.cachefiles.namers.source_name_as_path'
 IMAGEKIT_SPEC_CACHEFILE_NAMER = 'images.namers.igng_source_name_as_path'
 

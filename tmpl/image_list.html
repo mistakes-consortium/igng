@@ -66,10 +66,13 @@
                                     <span class="card-title">{{ object.title }}</span>
                                 </div>
                                 <div class="card-content">
+                                    <i class="small mdi mdi-settings right activator clicksettings" tabsel="settings"
+                                       tabpk="{{ object.pk }}" tabuuid="{{ object.uuid }}"></i>
                                     <i class="small mdi mdi-dots-vertical right activator clickinfo" tabsel="info"
                                        tabpk="{{ object.pk }}"></i>
                                     <i class="small mdi mdi-message-image right activator clickexif" tabsel="exif"
                                        tabpk="{{ object.pk }}" tabuuid="{{ object.uuid }}"></i>
+
                                     {% if object.tags.exists %}
                                         <p>
                                             {% for t in object.tags.all %}
@@ -92,7 +95,7 @@
                                                                   href="#t{{ object.pk }}info">Links</a></li>
                                         <li class="tab col s3"><a id="t{{ object.pk }}exifq"
                                                                   href="#t{{ object.pk }}exif">Exif</a></li>
-                                        <li class="tab col s3"><a href="#test4">Test 4</a></li>
+                                        <li class="tab col s3"><a id="t{{ object.pk }}settingsq" href="#t{{ object.pk }}settings">Settings</a></li>
                                     </ul>
                                     <div id="t{{ object.pk }}info" class="col s12">
                                         {% if user.profile.ui_darkness.value == 1 %}
@@ -144,9 +147,65 @@
                                         {% else %}
                                             <span class="card-title grey-text text-darken-4">
                                         {% endif %}
-                                        EXIF <i class="mdi mdi-close right"></i></span>
+                                        EXIF
+                                            <i class="mdi mdi-close right"></i>
+                                            <div class="card-action">
+                                            {% for e in object.exif %}
+                                            {% empty %}
+                                            <p>No EXIF</p>
+
+                                            {% endfor %}
+                                            </div>
+                                        </span>
                                     </div>
-                                    <div id="texif{{ object.pk }}" class="col s12">Test 4</div>
+                                    <div id="t{{ object.pk }}settings" class="col s12">
+                                        {% if user.profile.ui_darkness.value == 1 %}
+                                            <span class="card-title white-text text-darken-4">
+                                        {% else %}
+                                            <span class="card-title grey-text text-darken-4">
+                                        {% endif %}
+                                            Settings
+                                            <i class="mdi mdi-close right"></i>
+                                            <div class="row">
+                                                <div class="col s6">
+                                                    <a href="{% url "image_settings_tags" obj_uuid=object.uuid %}" class="white-text">
+                                                        <div class="card-panel light-blue lighten-1 center-align" >
+                                                            <i class="mdi mdi-tag mdi-36px"></i>
+                                                            <br/>
+                                                            <span class="small">Tags</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <a href="{% url "image_settings_gallery_move" obj_uuid=object.uuid %}" class="white-text">
+                                                        <div class="card-panel light-blue lighten-1 center-align">
+                                                            <i class="mdi mdi-image-multiple mdi-36px"></i>
+                                                            <br/>
+                                                            <span class="small">Gallery</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <a href="#" class="white-text">
+                                                        <div class="card-panel light-blue lighten-1 center-align">
+                                                            <i class="mdi mdi-pencil mdi-36px"></i>
+                                                            <br/>
+                                                            <span class="small">Edit</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col s6">
+                                                    <a href="#" class="white-text">
+                                                        <div class="card-panel light-blue lighten-1 center-align">
+                                                            <i class="mdi mdi-help mdi-36px"></i>
+                                                            <br/>
+                                                            <span class="small">?</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
 
                                 </div>
                             </div>
@@ -274,7 +333,7 @@
                 var tabrrr = "t" + id + sel;
                 {#            console.log(tabsel);#}
                 {#            console.log(tabtab);#}
-                {#            console.log(tabrrr);#}
+                            console.log(tabrrr);
                 $(tabsel).tabs('select_tab', tabrrr);
             });
             $('.tooltip').tooltipster({
