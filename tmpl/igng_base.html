@@ -159,24 +159,36 @@
 
 
                 </div>
+{#                <div class="col l3 s12">#}
+{#                    <a href="{% url "usersettings" %}"><h5 class="white-text">Settings</h5></a>#}
+{#                    <ul>#}
+{#                        <li><a class="white-text" href="#!">Link 1</a></li>#}
+{#                        <li><a class="white-text" href="#!">Link 2</a></li>#}
+{#                        <li><a class="white-text" href="#!">Link 3</a></li>#}
+{#                        <li><a class="white-text" href="#!">Link 4</a></li>#}
+{#                    </ul>#}
+{#                </div>#}
+                {% if user.is_authenticated %}
                 <div class="col l3 s12">
-                    <h5 class="white-text">Settings</h5>
+                    <h5 class="white-text">My</h5>
                     <ul>
-                        <li><a class="white-text" href="#!">Link 1</a></li>
-                        <li><a class="white-text" href="#!">Link 2</a></li>
-                        <li><a class="white-text" href="#!">Link 3</a></li>
-                        <li><a class="white-text" href="#!">Link 4</a></li>
+                        <li><a class="white-text" href="{% url "user_galleries" %}">Galleries</a></li>
+                        <li><a class="white-text" href="{% url "user_images" %}">Images</a></li>
+                        <li><a class="white-text" href="{% url "tags_user_all" %}">Tags</a></li>
+                        <li><a class="white-text" href="{% url "usersettings" %}">Settings</a></li>
                     </ul>
                 </div>
+                {% else %}
                 <div class="col l3 s12">
-                    <h5 class="white-text">Connect</h5>
+                    <a href="{% url "usersettings" %}"><h5 class="white-text">Whoa</h5></a>
                     <ul>
-                        <li><a class="white-text" href="#!">Link 1</a></li>
-                        <li><a class="white-text" href="#!">Link 2</a></li>
-                        <li><a class="white-text" href="#!">Link 3</a></li>
-                        <li><a class="white-text" href="#!">Link 4</a></li>
+                        <li><a class="white-text" href="{% url "account_login" %}">Login</a></li>
+                        <li><a class="white-text" href="{% url "account_signup" %}">Register</a></li>
+{#                        <li><a class="white-text" href="#!">Link 3</a></li>#}
+{#                        <li><a class="white-text" href="#!">Link 4</a></li>#}
                     </ul>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="footer-copyright">
