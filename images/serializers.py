@@ -37,11 +37,12 @@ class ImageSerializer(serializers.ModelSerializer):
 
     uploaded_u = serializers.SerializerMethodField()
     exif_data = EXIFSerializer(read_only=True, many=True)
+    tags = TagListSerializerField(required=False)
 
     class Meta:
         model = Image
         fields = ('uuid', 'user', 'gallery', 'uploaded', 'uploaded_u', 'title', 'uuid',
-                  'full_url', 'thumb_url', 'tiny_thumb_url', 'exif_data')
+                  'full_url', 'thumb_url', 'tiny_thumb_url', 'exif_data', 'tags')
 
     def get_full_url(self, obj):
         return obj.full_fixed.url
