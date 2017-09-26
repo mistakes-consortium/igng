@@ -29,7 +29,7 @@ class EXIFSerializer(serializers.ModelSerializer):
         fields = ('key', 'value')
 
 
-class ImageSerializer(serializers.ModelSerializer):
+class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
     full_url = serializers.SerializerMethodField()
     thumb_url = serializers.SerializerMethodField()
     tiny_thumb_url = serializers.SerializerMethodField()
