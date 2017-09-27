@@ -10,6 +10,7 @@ import pytz
 
 
 class GallerySerializer(serializers.ModelSerializer):
+    uuid = serializers.CharField(read_only=True)
     class Meta:
         model = Gallery
         fields = ('uuid', 'user', 'updated', 'updated_u', 'rel_start', 'rel_end', 'title', 'private')
@@ -38,6 +39,7 @@ class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
     uploaded_u = serializers.SerializerMethodField()
     exif_data = EXIFSerializer(read_only=True, many=True)
     tags = TagListSerializerField(required=False)
+    uuid = serializers.CharField(read_only=True)
 
     class Meta:
         model = Image
@@ -58,6 +60,7 @@ class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 
 class ImageUploadSerializer(TaggitSerializer,serializers.ModelSerializer):
+    uuid = serializers.CharField(read_only=True)
     original = serializers.FileField()
     tags = TagListSerializerField(required=False)
 
