@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
 from rest_framework import routers
+from rest_framework.documentation import include_docs_urls
+
 from images import api, views
 
 router = routers.DefaultRouter()
@@ -46,4 +48,8 @@ urlpatterns = [
 
     # api
     url(r'^api/', include(router.urls, namespace='api')),
+    #url(r'^api/(?P<version>(v1|v2))/', include(router.urls,namespace="apiversioned")),
+    url(r'^api/docs/', include_docs_urls(title='API')),
 ]
+
+#urlpatterns += [url(r'^api/(?P<version>(v1|v2))/', include('drf_openapi.urls'))]

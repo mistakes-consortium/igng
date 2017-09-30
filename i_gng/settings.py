@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     # the most necessary tool of all
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_openapi',
 
     # some niceties for forms
     # 'materializecssform',
@@ -87,6 +88,7 @@ INSTALLED_APPS = (
     'images',
     'lapses',
     'token_mgmt',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -197,7 +199,11 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning'
+}
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER":"common.serializers.UserDetailsSerializer"
 }
 
 # CELERY

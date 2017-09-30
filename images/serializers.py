@@ -75,7 +75,10 @@ class PasteImageUploadSerializer(serializers.ModelSerializer):
 
     def get_fields(self, *args, **kwargs):
         fields = super(PasteImageUploadSerializer, self).get_fields(*args, **kwargs)
-        fields['gallery'].queryset = Gallery.objects.filter(user=(self.context['request'].user))
+        if not 'request' in self.context or self.context['request'] == None: # Documentation Needs it
+            fields['gallery'].queryset = Gallery.objects.none()
+        else:
+            fields['gallery'].queryset = Gallery.objects.filter(user=(self.context['request'].user))
         return fields
 
     class Meta:

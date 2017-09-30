@@ -135,6 +135,7 @@ class ImageViewSet(viewsets.ModelViewSet):
 
 
 class PasteImageViewSet(mixins.CreateModelMixin, GenericViewSet):
+    queryset = Image.objects.all()
     serializer_class = PasteImageUploadSerializer
     def create(self, request, *args, **kwargs):
         serialized = PasteImageUploadSerializer(data=request.data, context={'request': request})
@@ -150,7 +151,9 @@ class PasteImageViewSet(mixins.CreateModelMixin, GenericViewSet):
 
 
 class TokenViewSet(mixins.ListModelMixin, GenericViewSet):
+    queryset = Token.objects.all()
     permission_classes = [IsAuthenticated]
+    serializer_class = TokenSerializer
     def list(self, request, *args, **kwargs):
         tokens = Token.objects.filter(user=request.user)
         serialized = TokenSerializer(tokens, many=True)
