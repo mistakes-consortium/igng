@@ -66,7 +66,7 @@ class ImageUploadSerializer(TaggitSerializer,serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = ('user', 'gallery', 'title', 'original', 'tags')
+        fields = ('user', 'gallery', 'title', 'original', 'tags', 'uuid')
 
 class PasteImageUploadSerializer(serializers.ModelSerializer):
     original = Base64ImageField(max_length=None, use_url=True,)
