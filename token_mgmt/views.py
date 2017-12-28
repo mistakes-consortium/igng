@@ -6,6 +6,7 @@ from django.conf import settings
 import qrcode
 import qrcode.image.svg
 import StringIO
+import urllib
 
 # Create your views here.
 from django.template.context import RequestContext
@@ -39,7 +40,8 @@ def token_mgmt_basic_remove(request, id):
     return redirect('token_list')
 
 def _make_qrcode(token):
-    img = qrcode.make("token=%s&site_url=%s" % (token, settings.SITE_URL), image_factory=qrcode.image.svg.SvgImage)
+    uri = urllib.urlencode({'token': token, 'site_url': settings.SITE_URL})
+    img = qrcode.make("igngauthinfo:%s" % uri, image_factory=qrcode.image.svg.SvgImage)
     output = StringIO.StringIO()
     img.save(output)
     return output.getvalue()
