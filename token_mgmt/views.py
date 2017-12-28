@@ -41,7 +41,7 @@ def token_mgmt_basic_remove(request, id):
 
 def _make_qrcode(token):
     uri = urllib.urlencode({'token': token, 'site_url': settings.SITE_URL})
-    img = qrcode.make("igngauthinfo:%s" % uri, image_factory=qrcode.image.svg.SvgImage)
+    img = qrcode.make("igngauthinfo:%s" % uri, image_factory=qrcode.image.svg.SvgFragmentImage)
     output = StringIO.StringIO()
     img.save(output)
     return output.getvalue()
