@@ -88,7 +88,6 @@ INSTALLED_APPS = (
     'images',
     'lapses',
     'token_mgmt',
-
 )
 
 MIDDLEWARE_CLASSES = (

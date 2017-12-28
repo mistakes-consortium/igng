@@ -60,3 +60,4 @@ tqdm==4.8.4
 uritemplate==3.0.0
 urllib3==1.22
 Werkzeug==0.12.2
+qrcode==5.3
