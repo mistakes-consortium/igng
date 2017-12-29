@@ -32,7 +32,9 @@
             <div class="row">
                  <ul class="collection with-header">
                     {% for t in tokens %}
-                         <li class="collection-item"><div>{{ t }}<a href="{% url "token_remove" t.pk %}" class="secondary-content"><i class="mdi-navigation-cancel"></i></a></div></li>
+                    <li class="collection-item"><div><p>{{ t.tk }}</p>
+			<img src='data:image/svg+xml;utf8,{{ t.qr|safe }}' />
+			<a href="{% url "token_remove" t.tk.pk %}" class="secondary-content"><i class="mdi-navigation-cancel"></i></a></div></li>
                     {% empty %}
                          <li class="collection-header"><h4>Add A Token Above</h4></li>
                     {% endfor %}
@@ -40,5 +42,4 @@
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
