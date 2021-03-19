@@ -28,7 +28,7 @@ django-taggit==0.22.1
 django-taggit-autosuggest==0.3.1
 django-taggit-serializer==0.1.5
 django-vanilla-views==1.0.4
-djangorestframework==3.6.4
+djangorestframework==3.11.2
 drf-openapi==0.9.7
 enum34==1.1.6
 idna==2.6
